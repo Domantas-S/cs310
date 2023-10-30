@@ -28,7 +28,7 @@
 	</svelte:fragment>
 	
 	<svelte:fragment slot="trail">
-		<button type="button" class="btn-icon variant filled">
+		<button type="button" class="btn-icon">
 			<Icon icon={modeNight}/>
 		</button>
 	</svelte:fragment>
