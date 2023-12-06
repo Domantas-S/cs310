@@ -1,5 +1,6 @@
+import sql from '$lib/db/db';
 
-export async function GET ({ url, locals: { dbCon } }) {
+export async function GET ({ url }) {
     const key = url.searchParams.get('key');
     const subkey = url.searchParams.get('subkey');
     if (key == null) {
@@ -7,9 +8,9 @@ export async function GET ({ url, locals: { dbCon } }) {
     }
     let result;
     if (subkey == null) {
-        result = await dbCon.query(`select record_id, info, context from get_info($1) join dev2 ON record_id=dev2.id`, [key]);
+        result = await sql`select record_id, info, context from get_info(${key}) join dev2 ON record_id=dev2.id`;
     } else {
-        result = await dbCon.query(`select record_id, info, context from get_info($1, $2) join dev2 ON record_id=dev2.id`, [key, subkey]);
+        result = await sql`select record_id, info, context from get_info(${key}, ${subkey}) join dev2 ON record_id=dev2.id`;
     }
-    return new Response(JSON.stringify(result.rows), { status: 200 })
+    return new Response(JSON.stringify(result), { status: 200 });
 }

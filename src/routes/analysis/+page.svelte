@@ -74,18 +74,6 @@
         <div>
             <form class ="flex space-x-2">
                 <div class="flex flex-col space-y-2">
-                    <label for="parameters">Parameters</label>
-                    <input type="text" id="parameters" name="parameters" class="input input-bordered" placeholder="Parameters" />
-                </div>
-                <div class="flex flex-col space-y-2">
-                    <label for="context">Context</label>
-                    <input type="text" id="context" name="context" class="input input-bordered" placeholder="Context" />
-                </div>
-                <div class="flex flex-col space-y-2">
-                    <label for="text">Text</label>
-                    <input type="text" id="text" name="text" class="input input-bordered" placeholder="Text" />
-                </div>
-                <div class="flex flex-col space-y-2">
                     <label class="label"for="Key">Key</label>
                     <select class="select" bind:value={selectedKey}>
                         <option value="" disabled selected>Select Key</option> 
@@ -112,6 +100,11 @@
                             {/each}
                         {/if}
                     </select>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <label class="label" for="Filters">Filters</label>
+                    <input class="input" type="text" placeholder="Search for a term inside the recor"/>
+                    
                 </div>
             </form>
         </div>
