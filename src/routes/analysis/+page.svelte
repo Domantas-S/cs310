@@ -1,18 +1,20 @@
 <script lang="ts">
     import { InputType } from '$lib/datatypes';
-    // import { getInfo } from 
+    import type { record } from '$lib/interfaces';
+    import { getAnnotationText } from '$lib/db/common.js';
+    
 
     export let data;
     let input: InputType | null = null;
-    let queryResult: any[] = [];
-    let results : any[] = [];
+    let results : record[] = [];
     let selectedKey = '';
     let selectedSubkey = '';
+    let target = '';
+    let exclude = false;
     const keysWithNoSubkeys = ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'];
 
     $: if (selectedKey !== '') {
-        console.log("HELLO");
-        execQuery(selectedKey, selectedSubkey);
+        execQuery(selectedKey, selectedSubkey, target, exclude);
     }
 
     let disableSubkey = true;
@@ -25,34 +27,20 @@
     //     selectedKey = '';
     // })
 
-    async function execQuery(key : string, subkey : string) {
+    async function execQuery(key : string, subkey : string, target : string = '', exclude : boolean = false) {
         if (key === '') {
             results = [];
         }
-        if (keysWithNoSubkeys.includes(key)) {
-            console.log("hi");
-            fetch("/api/get_info" + "?key=" + key
-            , {
-                method: "GET",
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data);
-                results = data;
-            })
-            .catch(err => console.log(err));
-        }
-        else{
-            // results = await getInfo(key, subkey);
-            fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey
-            , {
-                method: "GET",
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data);
-                results = data;
-            })
-            .catch(err => console.log(err));
-        }
+        console.log("hi");
+        fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey + "&target=" + target + "&exclude=" + exclude
+        , {
+            method: "GET",
+        }).then(res => res.json())
+        .then(data => {
+            console.log(data);
+            results = data;
+        })
+        .catch(err => console.log(err));
     }
 </script>
 
@@ -77,7 +65,7 @@
                     <label class="label"for="Key">Key</label>
                     <select class="select" bind:value={selectedKey}>
                         <option value="" disabled selected>Select Key</option> 
-                        {#each ['Effect', 'Negated', 'Severity', 'Speculated', 'Subject', 'Treatment', 'Trigger'] as key}
+                        {#each ['Effect', 'Negated', 'Severity', 'Speculated', 'Subject', 'Treatment', 'Trigger', 'Any'] as key}
                             <option value={key}>{key}</option>
                         {/each}
                     </select>
@@ -85,17 +73,17 @@
                 <div class="flex flex-col space-y-2">
                     <label class="label"for="Subkey">Subkey</label>
                     <select class="select" bind:value={selectedSubkey} disabled={disableSubkey}>
-                        <option value="" disabled selected>Select Key</option> 
-                        {#if ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'].includes(selectedKey)}
+                        <option value="Any" disabled selected>Any</option> 
+                        {#if keysWithNoSubkeys.includes(selectedKey)}
                             {setDisableSubkey(true)}
                         {:else if selectedKey === 'Subject'}
                             {setDisableSubkey(false)}
-                            {#each ['Age', 'Disorder', 'Gender', 'Population', 'Race'] as k}
+                            {#each ['Any', 'Age', 'Disorder', 'Gender', 'Population', 'Race'] as k}
                                 <option value={k}>{k}</option>
                             {/each}
                         {:else if selectedKey === 'Treatment'}
                             {setDisableSubkey(false)}
-                            {#each ['Combination', 'Disorder', 'Dosage', 'Drug', 'Duration', 'Freq', 'Route', 'Time Elapsed'] as k}
+                            {#each ['Any', 'Combination', 'Disorder', 'Dosage', 'Drug', 'Duration', 'Freq', 'Route', 'Time Elapsed'] as k}
                                 <option value={k}>{k}</option>
                             {/each}
                         {/if}
@@ -103,8 +91,12 @@
                 </div>
                 <div class="flex flex-col space-y-2">
                     <label class="label" for="Filters">Filters</label>
-                    <input class="input" type="text" placeholder="Search for a term inside the recor"/>
-                    
+                    <input class="input" type="text" placeholder="Key term" bind:value={target}/>
+                    <div class="flex flex-row h-full justify-center items-center space-x-2">
+                        <input class="checkbox" type="checkbox" id="exclude" name="exclude" bind:checked={exclude}>
+                        <p class="label">Exclude</p>
+                    </div>
+
                 </div>
             </form>
         </div>
@@ -124,7 +116,8 @@
         {#each results as row}
             <div class="card p-4 items-center h-full text-center">
                 <p>{row.context}</p>
-                <p>{row.info.text}</p>
+                <!-- <p>{JSON.stringify(row)}</p> -->
+                <p>{getAnnotationText(row, selectedKey, selectedSubkey)}</p>
             </div>
         {/each}
     </div>

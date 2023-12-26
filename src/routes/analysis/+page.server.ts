@@ -1,4 +1,4 @@
-import { connectToDB } from "$lib/db/db";
+// import { connectToDB } from "$lib/db/db";
 
 // export async function load({ locals }) {
 //     let result = await locals.dbCon.query(`select record_id, info, context from get_info('Subject', 'Age') join dev2 ON record_id=dev2.id`);

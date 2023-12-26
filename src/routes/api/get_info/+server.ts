@@ -1,16 +1,26 @@
-import sql from '$lib/db/db';
+import { searchAnnotation, searchAnnotationWithSubkey, searchAnnotationWithMatching } from '$lib/db/search.js';
+import type { Row } from 'postgres';
+import { rowListToRecordList } from '$lib/db/common';
 
 export async function GET ({ url }) {
     const key = url.searchParams.get('key');
-    const subkey = url.searchParams.get('subkey');
+    let subkey = url.searchParams.get('subkey');
+    let target = url.searchParams.get('target');
+    let exclude = url.searchParams.get('exclude');
     if (key == null) {
         return new Response(JSON.stringify({ error: "Missing key parameter" }), { status: 400 });
     }
-    let result;
-    if (subkey == null) {
-        result = await sql`select record_id, info, context from get_info(${key}) join dev2 ON record_id=dev2.id`;
-    } else {
-        result = await sql`select record_id, info, context from get_info(${key}, ${subkey}) join dev2 ON record_id=dev2.id`;
+    let result : Row[] = [];
+    subkey = subkey ?? '';
+    target = target ?? '';
+    exclude = exclude ?? 'false';
+
+    if (target == '') {
+        result = await searchAnnotationWithSubkey(key, subkey);
     }
-    return new Response(JSON.stringify(result), { status: 200 });
+    else {
+        result = await searchAnnotationWithMatching(key, subkey, target, exclude == 'true');
+    }
+
+    return new Response(JSON.stringify(rowListToRecordList(result)), { status: 200 });
 }

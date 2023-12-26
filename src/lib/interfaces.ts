@@ -6,53 +6,68 @@ export interface record {
 }
 
 export interface event extends event_info {
-    effect?: common,
-    trigger?: common,
-    negated?: valued_common,
-    severity?: valued_common,
-    speculated?: valued_common,
+    Effect?: common,
+    Trigger?: common,
+    Negated?: valued_common,
+    Severity?: valued_common,
+    Speculated?: valued_common,
 
-    subject?: subject,
-    treatment?: treatment,
+    Subject?: subject,
+    Treatment?: treatment,
 }
 
-interface event_info {
+export interface event_info {
     event_type: string,
     event_id: string,
 }
 
-interface common {
+export interface common {
     text: string[][],
     start: number[][],
     entity_id: string[][],
 }
 
-interface valued_common extends common {
+export interface valued_common extends common {
     value: boolean
 }
 
-interface subject extends common {
-    age?: common,
-    disorder?: common,
-    gender?: common,
-    population?: common,
-    race?: common,
+
+export interface subject extends common {
+    Age?: common,
+    Disorder?: common,
+    Gender?: common,
+    Population?: common,
+    Race?: common,
 }
 
-interface combination extends event_info {
-    drug?: common,
-    trigger?: common,
+export enum combination_field {
+    Drug = "Drug",
+    Trigger = "Trigger",
+}
+export interface combination extends event_info {
+    Drug?: common,
+    Trigger?: common,
 }
 
-interface treatment extends common {
-    drug?: common,
-    disorder?: common,
-    dosage?: common,
-    duration?: common,
-    trigger?: common,
-    route?: common,
-    time_elapsed?: common,
-    freq?: common,
-    combination?: combination[],
-
+export enum treatment_field {
+    Drug = "Drug",
+    Disorder = "Disorder",
+    Dosage = "Dosage",
+    Duration = "Duration",
+    Trigger = "Trigger",
+    Route = "Route",
+    Time_elapsed = "Time_elapsed",
+    Freq = "Freq",
+    Combination = "Combination",
+}
+export interface treatment extends common {
+    Drug?: common,
+    Disorder?: common,
+    Dosage?: common,
+    Duration?: common,
+    Trigger?: common,
+    Route?: common,
+    Time_elapsed?: common,
+    Freq?: common,
+    Combination?: combination[],
 }
