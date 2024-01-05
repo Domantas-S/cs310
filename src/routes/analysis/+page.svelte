@@ -1,6 +1,7 @@
 <script lang="ts">
     import { InputType } from '$lib/datatypes';
     import type { record } from '$lib/interfaces';
+    import Record from '$lib/common/Record.svelte';
     import { getAnnotationText } from '$lib/db/common.js';
     
 
@@ -112,13 +113,34 @@
 
 {#if results.length > 0 && input !== null}
     <div class="container h-full mx-auto justify-center items-center text-center" >
-        <h3 class="h-full">Results</h3>
-        {#each results as row}
-            <div class="card p-4 items-center h-full text-center">
-                <p>{row.context}</p>
-                <!-- <p>{JSON.stringify(row)}</p> -->
-                <p>{getAnnotationText(row, selectedKey, selectedSubkey)}</p>
+        <!-- Results heading -->
+        <div class="flex justify-between items-center">
+            <hr class="w-full border-gray-300">
+            <h2 class="h-full px-4">Results</h2>
+            <hr class="w-full border-gray-300">
+        </div>
+
+        <div class="py-5"></div>
+
+        <!-- Total results heading and buttons-->
+        <div class="flex h-full">
+            <p class="justify-begin"><strong>{results.length} records retrieved</strong></p>
+            <div class="flex-grow"></div>
+            <div class="flex justify-end">
+                <button class="btn variant-filled rounded px-10">Toggle Annotations</button>
+                <div class="px-2"></div>
+                <button class="btn variant-filled rounded px-10">Toggle Raw</button>
+                <div class="px-2"></div>
+                <button class="btn variant-filled rounded px-10">Export</button>
             </div>
+        </div>
+
+        <div class="py-5"></div>
+
+        <!-- Annotated records -->
+        {#each results as row, index}
+            <Record info={row} currentRecord={index+1} totalRecords={results.length}></Record>
+            <div class="py-5"></div>
         {/each}
     </div>
     
