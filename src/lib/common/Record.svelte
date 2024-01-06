@@ -1,9 +1,16 @@
 <script lang="ts">
     import type { record } from '$lib/interfaces';
+    import Icon from '@iconify/svelte';
+    import dataIcon from '@iconify/icons-material-symbols/code';
+    import notesIcon from '@iconify/icons-material-symbols/notes';
+
+    import JsonRecord from './JSONRecord.svelte';
   
     export let info: record;
     export let currentRecord: number;
     export let totalRecords: number;
+
+    let raw = false;
 </script>
   
 <div class="border rounded border-gray-300 p-4">
@@ -11,19 +18,27 @@
         <p class="flex justify-begin"><i>{`${currentRecord} / ${totalRecords}`}</i></p>
         <p><strong>ID: {info.id}</strong></p>
         <div class="flex justify-end">
-            <button class="border border-gray-300 bg-transparent">
-                annotation toggle
-            </button>
-            <button class="border border-gray-300 bg-transparent">
-                raw
+            {#if !raw}
+                <button class="btn-icon btn-icon-sm variant-filled">
+                    <Icon icon={notesIcon} />
+                </button>
+                <div class="px-1"></div>
+            {/if}
+            <button
+                class="btn-icon btn-icon-sm variant-filled"
+                on:click={() => raw = !raw}>
+                <Icon icon={dataIcon} />
             </button>
         </div>
     </div>
     <div class="py-2"></div>
     
     <!-- Annotated record -->
-    <p>{info.context}</p>
-
+    {#if !raw}
+        <p>{info.context}</p>
+    {:else} 
+        <JsonRecord data={info}></JsonRecord>
+    {/if}
     <div class="py-2"></div>
     <div class="flex justify-between">
         <p>{info.annotations[0].event_type}</p>
