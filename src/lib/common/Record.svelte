@@ -9,8 +9,8 @@
     export let info: record;
     export let currentRecord: number;
     export let totalRecords: number;
+    export let raw = false;
 
-    let raw = false;
 </script>
   
 <div class="border rounded border-gray-300 p-4">

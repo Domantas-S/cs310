@@ -12,6 +12,7 @@
     let selectedSubkey = '';
     let target = '';
     let exclude = false;
+    let raw = false;
     const keysWithNoSubkeys = ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'];
 
     $: if (selectedKey !== '') {
@@ -43,6 +44,7 @@
         })
         .catch(err => console.log(err));
     }
+
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -129,7 +131,7 @@
             <div class="flex justify-end">
                 <button class="btn variant-filled rounded px-10">Toggle Annotations</button>
                 <div class="px-2"></div>
-                <button class="btn variant-filled rounded px-10">Toggle Raw</button>
+                <button class="btn variant-filled rounded px-10" on:click={() => raw = !raw}>Toggle Raw</button>
                 <div class="px-2"></div>
                 <button class="btn variant-filled rounded px-10">Export</button>
             </div>
@@ -139,7 +141,9 @@
 
         <!-- Annotated records -->
         {#each results as row, index}
-            <Record info={row} currentRecord={index+1} totalRecords={results.length}></Record>
+            {#key raw}
+                <Record info={row} currentRecord={index+1} totalRecords={results.length} {raw}></Record>
+            {/key}
             <div class="py-5"></div>
         {/each}
     </div>
