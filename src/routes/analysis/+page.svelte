@@ -141,10 +141,10 @@
 
         <!-- Annotated records -->
         {#each results as row, index}
-            {#key raw}
-                <Record info={row} currentRecord={index+1} totalRecords={results.length} {raw}></Record>
-            {/key}
-            <div class="py-5"></div>
+                {#key raw}
+                    <Record info={row} currentRecord={index+1} totalRecords={results.length} raw={raw}></Record>
+                {/key}
+            <div class="py-5"/>
         {/each}
     </div>
     

@@ -5,6 +5,8 @@
     import notesIcon from '@iconify/icons-material-symbols/notes';
 
     import JsonRecord from './JSONRecord.svelte';
+	import AnnotatedRecord from './AnnotatedRecord.svelte';
+	import data from '@iconify/icons-material-symbols/content-copy';
   
     export let info: record;
     export let currentRecord: number;
@@ -36,6 +38,7 @@
     <!-- Annotated record -->
     {#if !raw}
         <p>{info.context}</p>
+            <AnnotatedRecord data={info} />
     {:else} 
         <JsonRecord data={info}></JsonRecord>
     {/if}

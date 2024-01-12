@@ -71,3 +71,18 @@ export interface treatment extends common {
     Freq?: common,
     Combination?: combination[],
 }
+
+export interface annotation {
+    start: number, 
+    text: string,
+    annotation_type: string,
+}
+
+export interface annotation_segment{
+    start: number,
+    end: number,
+    text: string,
+    is_annotation: boolean,
+    annotation_type: string,
+    children: annotation_segment[],
+}
