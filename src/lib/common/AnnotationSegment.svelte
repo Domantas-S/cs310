@@ -58,7 +58,7 @@
     </span>
   </span>
   {#if isAnnotation}
-    <div class="absolute top-full right-0 p-1 text-xs text-white bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+    <div class="absolute {children.length > 0 ? "bottom-full" : "top-full"} right-0 p-1 text-xs text-white bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
       {annotation}
     </div>
   {/if}
