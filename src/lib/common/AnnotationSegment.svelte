@@ -7,6 +7,7 @@
   export let start : number;
   export let end : number;
   export let children: annotation_segment[] = [];  // start, end, AnnotationSegment
+  export let popupToggle: boolean = false;
 
   let textSpliced: string[] = [];
   
@@ -18,6 +19,7 @@
     end = end;
     children = children;
     textSpliced = spliceText();
+    popupToggle = popupToggle;
   }
 
   function spliceText() { // correctly split text among parent and children
@@ -51,14 +53,31 @@
         {part}
         {#if children[i]}
           <div class="px-1">
-            <AnnotationSegment start={children[i].start} end={children[i].end} text={children[i].text} annotation={children[i].annotation_type} isAnnotation={children[i].is_annotation}/>
+            <AnnotationSegment 
+              start={children[i].start} 
+              end={children[i].end} 
+              text={children[i].text} 
+              annotation={children[i].annotation_type} 
+              isAnnotation={children[i].is_annotation}
+              popupToggle={popupToggle} />
           </div>
         {/if}
       {/each}
     </span>
   </span>
   {#if isAnnotation}
-    <div class="absolute {children.length > 0 ? "bottom-full" : "top-full"} right-0 p-1 text-xs text-white bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+   <div class="absolute 
+      {children.length > 0 ? "bottom-full" : "top-full"} 
+      right-0 
+      p-1 
+      text-xs 
+      text-white 
+      bg-black 
+      {popupToggle ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} 
+      transition-opacity 
+      duration-200 
+      z-50">
+
       {annotation}
     </div>
   {/if}

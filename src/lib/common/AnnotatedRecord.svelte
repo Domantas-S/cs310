@@ -2,12 +2,14 @@
     import type { record, annotation, common, event, subject, treatment, annotation_segment } from "$lib/interfaces";
     import AnnotationSegment from "./AnnotationSegment.svelte";
     export let data: record;
+    export let popupToggle = false;
    
     let annotations = [] as [string, number, number][];
 
     let segments : annotation_segment[] = [];
     $: { 
         data = data;
+        popupToggle = popupToggle;
         annotations = extractAnnotations(data).sort((a, b) => a[1] - b[1] || b[2] - a[2]);
         segments = generateSegments2(annotations);
     }
@@ -265,7 +267,14 @@
 
 <div class="flex flex-wrap flex-row justify-center items-center">
     {#each segments as segment}
-        <AnnotationSegment start={segment.start} end={segment.end} text={segment.text} isAnnotation={segment.is_annotation} annotation={segment.annotation_type} children={segment.children} />
+        <AnnotationSegment 
+            start={segment.start} 
+            end={segment.end} 
+            text={segment.text} 
+            isAnnotation={segment.is_annotation} 
+            annotation={segment.annotation_type} 
+            children={segment.children} 
+            popupToggle={popupToggle}/>
     {/each}
 </div>
 

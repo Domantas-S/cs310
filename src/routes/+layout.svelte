@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
+	import { AppBar, AppShell, LightSwitch } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
 	import modeNight from '@iconify/icons-material-symbols/mode-night';
 	import { goto } from '$app/navigation';
@@ -35,9 +35,7 @@
 			</svelte:fragment>
 			
 			<svelte:fragment slot="trail">
-				<button type="button" class="btn-icon">
-					<Icon icon={modeNight}/>
-				</button>
+				<LightSwitch />
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>

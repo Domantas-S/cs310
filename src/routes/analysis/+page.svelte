@@ -14,6 +14,7 @@
     let target = '';
     let exclude = false;
     let raw = false;
+    let popupToggle = false;
     const keysWithNoSubkeys = ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'];
 
     let paginationSettings = {
@@ -138,7 +139,7 @@
             <p class="justify-begin"><strong>{results.length} records retrieved</strong></p>
             <div class="flex-grow"></div>
             <div class="flex justify-end">
-                <button class="btn variant-filled rounded px-10">Toggle Annotations</button>
+                <button class="btn variant-filled rounded px-10" on:click={() => popupToggle = !popupToggle}>Toggle Annotations</button>
                 <div class="px-2"></div>
                 <button class="btn variant-filled rounded px-10" on:click={() => raw = !raw}>Toggle Raw</button>
                 <div class="px-2"></div>
@@ -160,7 +161,8 @@
                             info={row}
                             currentRecord={(paginationSettings.page * paginationSettings.limit) + index + 1} 
                             totalRecords={results.length} 
-                            raw={raw}/>
+                            raw={raw}
+                            popupToggle={popupToggle}/>
                     {/key}
                 <div class="py-5"/>
             {/each}

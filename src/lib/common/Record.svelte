@@ -6,14 +6,21 @@
 
     import JsonRecord from './JSONRecord.svelte';
 	import AnnotatedRecord from './AnnotatedRecord.svelte';
-	import data from '@iconify/icons-material-symbols/content-copy';
   
     export let info: record;
     export let currentRecord: number;
     export let totalRecords: number;
     export let raw = false;
 
-    $: info = info;
+    export let popupToggle = false;
+
+    $: {
+        info = info;
+        currentRecord = currentRecord;
+        totalRecords = totalRecords;
+        raw = raw;
+        popupToggle = popupToggle;
+    }
 
 </script>
   
@@ -23,7 +30,8 @@
         <p><strong>ID: {info.id}</strong></p>
         <div class="flex justify-end">
             {#if !raw}
-                <button class="btn-icon btn-icon-sm variant-filled">
+                <!-- Toggle annotations buttons -->
+                <button class="btn-icon btn-icon-sm variant-filled" on:click={() => popupToggle = !popupToggle}>    
                     <Icon icon={notesIcon} />
                 </button>
                 <div class="px-1"></div>
@@ -40,7 +48,7 @@
     <!-- Annotated record -->
     {#if !raw}
         <!-- <p>{info.context}</p> -->
-        <AnnotatedRecord data={info} />
+        <AnnotatedRecord data={info} popupToggle={popupToggle}/>
     {:else} 
         <JsonRecord data={info}></JsonRecord>
     {/if}
