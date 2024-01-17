@@ -13,6 +13,8 @@
     export let totalRecords: number;
     export let raw = false;
 
+    $: info = info;
+
 </script>
   
 <div class="border rounded border-gray-300 p-4">
@@ -37,8 +39,8 @@
     
     <!-- Annotated record -->
     {#if !raw}
-        <p>{info.context}</p>
-            <AnnotatedRecord data={info} />
+        <!-- <p>{info.context}</p> -->
+        <AnnotatedRecord data={info} />
     {:else} 
         <JsonRecord data={info}></JsonRecord>
     {/if}

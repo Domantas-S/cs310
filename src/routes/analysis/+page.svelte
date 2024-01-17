@@ -2,7 +2,8 @@
     import { InputType } from '$lib/datatypes';
     import type { record } from '$lib/interfaces';
     import Record from '$lib/common/Record.svelte';
-    import { getAnnotationText } from '$lib/db/common.js';
+    // import { getAnnotationText } from '$lib/db/common.js';
+    import { Paginator, type PaginationSettings } from '@skeletonlabs/skeleton';
     
 
     export let data;
@@ -15,9 +16,20 @@
     let raw = false;
     const keysWithNoSubkeys = ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'];
 
+    let paginationSettings = {
+        page: 0,
+        limit: 50,
+        size: results.length,
+        amounts: [10,20,50,100],
+        }   satisfies PaginationSettings;
+
+
     $: if (selectedKey !== '') {
         execQuery(selectedKey, selectedSubkey, target, exclude);
     }
+    $: paginatedResults = results.slice(paginationSettings.page * paginationSettings.limit, 
+        (paginationSettings.page * paginationSettings.limit) + paginationSettings.limit);
+    $: paginationSettings.size = results.length;
 
     let disableSubkey = true;
     const setDisableSubkey = (val : boolean) => {
@@ -25,9 +37,6 @@
         selectedSubkey = '';
     }
 
-    // onMount(async () => {
-    //     selectedKey = '';
-    // })
 
     async function execQuery(key : string, subkey : string, target : string = '', exclude : boolean = false) {
         if (key === '') {
@@ -137,15 +146,24 @@
             </div>
         </div>
 
-        <div class="py-5"></div>
+        <div class="py-2"></div>
 
+        <Paginator 
+        bind:settings={paginationSettings}
+        showFirstLastButtons="{true}"
+        showPreviousNextButtons="{true}"/>
+        <div class="py-2"></div>
         <!-- Annotated records -->
-        {#each results as row, index}
-                {#key raw}
-                    <Record info={row} currentRecord={index+1} totalRecords={results.length} raw={raw}></Record>
-                {/key}
-            <div class="py-5"/>
-        {/each}
+            {#each paginatedResults as row, index}
+                    {#key raw}
+                        <Record 
+                            info={row}
+                            currentRecord={(paginationSettings.page * paginationSettings.limit) + index + 1} 
+                            totalRecords={results.length} 
+                            raw={raw}/>
+                    {/key}
+                <div class="py-5"/>
+            {/each}
     </div>
     
 {:else if input !== null}

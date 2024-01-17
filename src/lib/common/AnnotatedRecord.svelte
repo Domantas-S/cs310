@@ -3,11 +3,11 @@
     import AnnotationSegment from "./AnnotationSegment.svelte";
     export let data: record;
    
-    // let segments = [] as { text: string; start: number; end: number; isAnnotation: boolean }[];
     let annotations = [] as [string, number, number][];
 
     let segments : annotation_segment[] = [];
     $: { 
+        data = data;
         annotations = extractAnnotations(data).sort((a, b) => a[1] - b[1] || b[2] - a[2]);
         segments = generateSegments2(annotations);
     }
@@ -263,7 +263,7 @@
 
 </script>
 
-<div class="flex flex-wrap flex-row">
+<div class="flex flex-wrap flex-row justify-center">
     {#each segments as segment}
         <AnnotationSegment start={segment.start} end={segment.end} text={segment.text} isAnnotation={segment.is_annotation} annotation={segment.annotation_type} children={segment.children} />
     {/each}

@@ -6,13 +6,17 @@
   export let text: string = '';
   export let start : number;
   export let end : number;
-
-  
   export let children: annotation_segment[] = [];  // start, end, AnnotationSegment
 
   let textSpliced: string[] = [];
-
+  
   $: {
+    isAnnotation = isAnnotation;
+    annotation = annotation;
+    text = text;
+    start = start;
+    end = end;
+    children = children;
     textSpliced = spliceText();
   }
 
