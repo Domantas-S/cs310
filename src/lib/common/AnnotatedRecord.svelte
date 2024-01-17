@@ -263,7 +263,7 @@
 
 </script>
 
-<div class="flex flex-wrap flex-row justify-center">
+<div class="flex flex-wrap flex-row justify-center items-center">
     {#each segments as segment}
         <AnnotationSegment start={segment.start} end={segment.end} text={segment.text} isAnnotation={segment.is_annotation} annotation={segment.annotation_type} children={segment.children} />
     {/each}

@@ -40,36 +40,25 @@
     return textSpliced;
   }
 
-
-  let x = 0;
-  let y = 0;
-  const offset = 5;
-  let parent;
-
-  function handleMouseMove(event) {
-    const rect = parent.getBoundingClientRect();
-    x = event.clientX - rect.left + offset;
-    y = event.clientY - rect.top + offset;
-  }
 </script>
 
 <svelte:options accessors={true}/>
 
-<div class="group relative flex flex-row align-middle" bind:this={parent}>
-  <span class:rounded={isAnnotation} class="px-2 py-1" on:mousemove={handleMouseMove} role="presentation">
-    <span class="flex">
+<div class="group relative flex flex-row align-middle">
+  <span class:rounded={isAnnotation} class="px-2 py-1" role="presentation">
+    <span class="flex items-center">
       {#each textSpliced as part, i}
         {part}
         {#if children[i]}
-          <div class="px-2">
+          <div class="px-1">
             <AnnotationSegment start={children[i].start} end={children[i].end} text={children[i].text} annotation={children[i].annotation_type} isAnnotation={children[i].is_annotation}/>
           </div>
-          {/if}
+        {/if}
       {/each}
     </span>
   </span>
   {#if isAnnotation}
-    <div class="absolute p-1 text-xs text-white bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50" style="left: {x}px; top: {y}px;">
+    <div class="absolute top-full right-0 p-1 text-xs text-white bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
       {annotation}
     </div>
   {/if}
