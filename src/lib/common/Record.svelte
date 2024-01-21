@@ -27,7 +27,7 @@
 <div class="border rounded border-gray-300 p-4">
     <div class="flex grid grid-cols-3">
         <p class="flex justify-begin"><i>{`${currentRecord} / ${totalRecords}`}</i></p>
-        <p><strong>ID: {info.id}</strong></p>
+        <p><strong>{info.annotations[0].event_type}</strong></p>
         <div class="flex justify-end">
             {#if !raw}
                 <!-- Toggle annotations buttons -->
@@ -54,7 +54,7 @@
     {/if}
     <div class="py-2"></div>
     <div class="flex justify-between">
-        <p>{info.annotations[0].event_type}</p>
+        <p>ID: {info.id}</p>
         <p>Human annotated</p>
     </div>
 </div>
