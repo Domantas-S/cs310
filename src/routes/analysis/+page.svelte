@@ -3,8 +3,43 @@
     import type { record } from '$lib/interfaces';
     import Record from '$lib/common/Record.svelte';
     // import { getAnnotationText } from '$lib/db/common.js';
-    import { Paginator, type PaginationSettings } from '@skeletonlabs/skeleton';
-    
+    import { Paginator, type PaginationSettings, type ModalSettings } from '@skeletonlabs/skeleton';
+    import { getModalStore } from '@skeletonlabs/skeleton';
+			
+    const modalStore = getModalStore();
+    const modal: ModalSettings = {
+        type: 'confirm',
+        // Data
+        title: 'Please Confirm',
+        body: `Are you sure you wish to proceed to download all queried records?\nThe file is in NDJSON format.`,
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: async (r: boolean) => {
+            if (r) {
+            const response = await fetch('/api/export', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/x-ndjson',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(results),
+            });
+
+            if (!response.ok) {
+                console.error('Failed to download NDJSON file:', response.statusText);
+                return;
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'data.ndjson';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        },
+    };
 
     export let data;
     let input: InputType | null = null;
@@ -23,7 +58,6 @@
         size: results.length,
         amounts: [10,20,50,100],
         }   satisfies PaginationSettings;
-
 
     $: if (selectedKey !== '') {
         execQuery(selectedKey, selectedSubkey, target, exclude);
@@ -143,7 +177,7 @@
                 <div class="px-2"></div>
                 <button class="btn variant-filled rounded px-10" on:click={() => raw = !raw}>Toggle Raw</button>
                 <div class="px-2"></div>
-                <button class="btn variant-filled rounded px-10">Export</button>
+                <button class="btn variant-filled rounded px-10" on:click={() => modalStore.trigger(modal)}>Export</button>
             </div>
         </div>
 

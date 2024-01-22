@@ -15,9 +15,14 @@
 	import {Toast} from '@skeletonlabs/skeleton';
 	initializeStores();
 
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+
 </script>
 
 <Toast />
+
+<Modal />
 
 <AppShell>
 	<svelte:fragment slot="header">

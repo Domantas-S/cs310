@@ -38,7 +38,6 @@
     }
     textSpliced.push(text.slice(last)); // push last part of text
     
-    console.log(textSpliced);
     return textSpliced;
   }
 
