@@ -2,9 +2,11 @@
     import { InputType } from '$lib/datatypes';
     import type { record } from '$lib/interfaces';
     import Record from '$lib/common/Record.svelte';
-    // import { getAnnotationText } from '$lib/db/common.js';
+    import Query from '$lib/common/Query.svelte';
     import { Paginator, type PaginationSettings, type ModalSettings } from '@skeletonlabs/skeleton';
     import { getModalStore } from '@skeletonlabs/skeleton';
+	import Icon from '@iconify/svelte';
+    import plusIcon from '@iconify/icons-material-symbols/add'
 			
     const modalStore = getModalStore();
     const modal: ModalSettings = {
@@ -44,13 +46,10 @@
     export let data;
     let input: InputType | null = null;
     let results : record[] = [];
-    let selectedKey = '';
-    let selectedSubkey = '';
-    let target = '';
-    let exclude = false;
+    let queries : {key: string, subkey: string, searchTerm: string, exclude: boolean}[] = [{key: '', subkey: '', searchTerm: '', exclude: false}];
+    let destroyQueries : boolean[] = [];
     let raw = false;
     let popupToggle = false;
-    const keysWithNoSubkeys = ['Effect', 'Negated', 'Severity', 'Speculated', 'Trigger'];
 
     let paginationSettings = {
         page: 0,
@@ -59,34 +58,66 @@
         amounts: [10,20,50,100],
         }   satisfies PaginationSettings;
 
-    $: if (selectedKey !== '') {
-        execQuery(selectedKey, selectedSubkey, target, exclude);
+
+    function addBlankQuery() {
+        queries = [...queries, {key: '', subkey: '', searchTerm: '', exclude: false}];
+        destroyQueries = [...destroyQueries, false];
     }
+
+    $: {
+        destroyQueries.forEach((destroy, i) => {
+            if (destroy) {
+                removeQuery(i);
+            }
+        });
+    }
+
+    function removeQuery(index : number) {
+        queries.splice(index, 1);
+        queries = queries.slice(); // to trigger reactivity
+
+        destroyQueries.splice(index, 1);
+        destroyQueries = destroyQueries.slice(); // to trigger reactivity
+    }
+
     $: paginatedResults = results.slice(paginationSettings.page * paginationSettings.limit, 
         (paginationSettings.page * paginationSettings.limit) + paginationSettings.limit);
     $: paginationSettings.size = results.length;
 
-    let disableSubkey = true;
-    const setDisableSubkey = (val : boolean) => {
-        disableSubkey = val;
-        selectedSubkey = '';
+
+
+    async function execQuery(key : string, subkey : string, searchTerm : string = '', exclude : boolean = false) {  // calling endpoint
+        if (key === '') {
+            return [];
+        }
+
+        const response = await fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey + "&target=" + searchTerm + "&exclude=" + exclude, {
+            method: "GET",
+        });
+
+        const data = await response.json();
+        return data;
     }
 
-
-    async function execQuery(key : string, subkey : string, target : string = '', exclude : boolean = false) {
-        if (key === '') {
-            results = [];
-        }
-        console.log("hi");
-        fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey + "&target=" + target + "&exclude=" + exclude
-        , {
-            method: "GET",
-        }).then(res => res.json())
-        .then(data => {
-            console.log(data);
-            results = data;
-        })
-        .catch(err => console.log(err));
+    $: {    // execute queries dynamically
+        (async () => {
+            if (queries.length === 0) {
+                results = [];
+                return;
+            }
+            let queryResults = await execQuery(queries[0].key, queries[0].subkey, queries[0].searchTerm, queries[0].exclude);
+            let intersection: Set<any> = new Set(queryResults.map((record : record) => record.id)); // intersect by ID, since ID is (should be) unique
+            if (intersection.size === 0) {  // if no results from first query, return
+                results = [];
+                return;
+            }
+            for (let i = 1; i < queries.length; i++) {
+                queryResults = await execQuery(queries[i].key, queries[i].subkey, queries[i].searchTerm, queries[i].exclude);
+                let set = new Set(queryResults.map((record : record) => record.id));
+                intersection = new Set([...intersection].filter(x => set.has(x)));
+            }
+            results = queryResults.filter((record : record) => intersection.has(record.id));
+        })();
     }
 
 </script>
@@ -107,45 +138,16 @@
 <div class="container h-full mx-auto flex justify-center items-center">
     {#if input === InputType.Parameters}
         <div>
-            <form class ="flex space-x-2">
-                <div class="flex flex-col space-y-2">
-                    <label class="label"for="Key">Key</label>
-                    <select class="select" bind:value={selectedKey}>
-                        <option value="" disabled selected>Select Key</option> 
-                        {#each ['Effect', 'Negated', 'Severity', 'Speculated', 'Subject', 'Treatment', 'Trigger', 'Any'] as key}
-                            <option value={key}>{key}</option>
-                        {/each}
-                    </select>
-                </div>
-                <div class="flex flex-col space-y-2">
-                    <label class="label"for="Subkey">Subkey</label>
-                    <select class="select" bind:value={selectedSubkey} disabled={disableSubkey}>
-                        <option value="Any" disabled selected>Any</option> 
-                        {#if keysWithNoSubkeys.includes(selectedKey)}
-                            {setDisableSubkey(true)}
-                        {:else if selectedKey === 'Subject'}
-                            {setDisableSubkey(false)}
-                            {#each ['Any', 'Age', 'Disorder', 'Gender', 'Population', 'Race'] as k}
-                                <option value={k}>{k}</option>
-                            {/each}
-                        {:else if selectedKey === 'Treatment'}
-                            {setDisableSubkey(false)}
-                            {#each ['Any', 'Combination', 'Disorder', 'Dosage', 'Drug', 'Duration', 'Freq', 'Route', 'Time Elapsed'] as k}
-                                <option value={k}>{k}</option>
-                            {/each}
-                        {/if}
-                    </select>
-                </div>
-                <div class="flex flex-col space-y-2">
-                    <label class="label" for="Filters">Filters</label>
-                    <input class="input" type="text" placeholder="Key term" bind:value={target}/>
-                    <div class="flex flex-row h-full justify-center items-center space-x-2">
-                        <input class="checkbox" type="checkbox" id="exclude" name="exclude" bind:checked={exclude}>
-                        <p class="label">Exclude</p>
-                    </div>
-
-                </div>
-            </form>
+            {#each queries as query, i (i)}
+                <Query bind:query={query} bind:destroy={destroyQueries[i]} on:destroy={() => removeQuery(i)} />
+                <div class="py-2"/>
+            {/each}
+            <div class="flex justify-center py-5">
+                <button class="btn-sm variant-filled rounded flex justify-items-center items-center" on:click={() => addBlankQuery()}>
+                    <Icon icon={plusIcon}></Icon>
+                    <p>Add query</p>
+                </button>
+            </div>
         </div>
     {:else if input === InputType.Text}
         <div class="card p-4 items-center h-full text-center">
