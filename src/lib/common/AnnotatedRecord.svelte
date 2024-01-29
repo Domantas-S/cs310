@@ -4,7 +4,7 @@
     export let data: record;
     export let popupToggle = false;
    
-    let annotations = [] as [string, number, number][];
+    let annotations = [] as [string, number, number, number][];
 
     let segments : annotation_segment[] = [];
     $: { 
@@ -16,34 +16,33 @@
 
 
     // Return an array of [annotation, start_char, end_char] for each annotation 
-    function extractAnnotations(record: record) : [string, number, number][] {
-        let annotations : [string, number, number][] = [];
+    function extractAnnotations(record: record) : [string, number, number, number][] {
+        let annotations : [string, number, number, number][] = [];  // [annotation, start_char, end_char, event_index]
 
         for (let i = 0; i < record.annotations.length; i++) {
             const e = record.annotations[i];
 
             if (e.Effect) {
-                annotations.push(...parseCommon("Effect", e.Effect));
+                annotations.push(...parseCommon("Effect", e.Effect).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Trigger) {
-                annotations.push(...parseCommon("Trigger", e.Trigger));
+                annotations.push(...parseCommon("Trigger", e.Trigger).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Negated) {
-                annotations.push(...parseCommon("Negated", e.Negated));
+                annotations.push(...parseCommon("Negated", e.Negated).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Severity) {
-                annotations.push(...parseCommon("Severity", e.Severity));
+                annotations.push(...parseCommon("Severity", e.Severity).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Speculated) {
-                annotations.push(...parseCommon("Speculated", e.Speculated));
+                annotations.push(...parseCommon("Speculated", e.Speculated).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Subject) {
-                annotations.push(...parseSubject("Subject", e.Subject));
+                annotations.push(...parseSubject("Subject", e.Subject).map(a => [...a, i] as [string, number, number, number]));
             }
             if (e.Treatment) {
-                annotations.push(...parseTreatment("Treatment", e.Treatment));
+                annotations.push(...parseTreatment("Treatment", e.Treatment).map(a => [...a, i] as [string, number, number, number]));
             }
-
         }
         // sort annotations by start_char
         annotations.sort((a, b) => a[1] - b[1]);
@@ -138,7 +137,7 @@
 
     // generate segments by iterating through annotations and adding AnnotationSegments for each annotation
     // if an annotation starts in another annotation (contains part or all of it), then store the inner annotation as a child of the outer annotation
-    function generateSegments2(annotations : [string, number, number][]) { // assume annotations are stored in order
+    function generateSegments2(annotations : [string, number, number, number][]) { // assume annotations are stored in order
         let segments : annotation_segment[] = [];
         let prevAnnotationRange = {start: 0, end: 0};
         let prevAnnotation : annotation_segment | null = null;
@@ -151,53 +150,8 @@
             }
         }
 
-
-        function addChild(newAnnotation : [string, number, number], parent : annotation_segment) {
-            const [annotation, start, end] = newAnnotation;
-            if (parent.children.length === 0) { // no more children so just add it
-                parent.children.push({
-                    start: start,
-                    end: end,
-                    text: data.context.slice(start, end),
-                    is_annotation: true,
-                    annotation_type: annotation,
-                    children: []
-                });
-                
-                if (end > parent.end) { // extending the range of the parent annotation (since child annotation extends out of parent annotation)
-                    parent.end = end;
-                }
-            }
-            else {  // check if newAnnotation overlaps with any children, REMEMBER, ANNOATIONS ARE SORTED BY START INDEX
-                let found = false;
-                for (let i = 0; i < parent.children.length; i++) {
-                    const child = parent.children[i];
-                    if (start >= child.start && start < child.end) { // newAnnotation starts in child annotation
-                        addChild(newAnnotation, child); // recursively add newAnnotation as a child of the child annotation
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    parent.children.push({
-                                start: start,
-                                end: end,
-                                text: data.context.slice(start, end),
-                                is_annotation: true,
-                                annotation_type: annotation,
-                                children: []
-                            });
-
-                    if (end > parent.end) { // extending the range of the parent annotation (since child annotation extends out of parent annotation)
-                        parent.end = end;
-                    }
-                }
-
-            }
-        }
-
         for (let i = 0; i < annotations.length; i++) { // main code
-            const [annotation, start, end] = annotations[i];
+            const [annotation, start, end, event_colour] = annotations[i];
 
             if (start > prevAnnotationRange.end) {   // gap between annotations
                 segments.push({  // add text between annotations
@@ -206,7 +160,8 @@
                             text: data.context.slice(prevAnnotationRange.end, start),
                             is_annotation: false,
                             annotation_type: "",
-                            children: []
+                            children: [],
+                            event_colour
                         }
                 );
                 segments.push({  // add new parent annotation
@@ -215,7 +170,8 @@
                             text: data.context.slice(start, end),
                             is_annotation: true,
                             annotation_type: annotation,
-                            children: []
+                            children: [],
+                            event_colour
                         }
                 );
 
@@ -230,7 +186,8 @@
                             text: data.context.slice(start, end),
                             is_annotation: true,
                             annotation_type: annotation,
-                            children: []
+                            children: [],
+                            event_colour
                         }
                 );
                 prevAnnotationRange.start = start;
@@ -256,11 +213,59 @@
                         text: data.context.slice(prevAnnotationRange.end),
                         is_annotation: false,
                         annotation_type: "",
-                        children: []
+                        children: [],
+                        event_colour: 0 // dummy/default value. not used since is_annotation is false
                     }
             );
         }
         return segments;
+
+
+        function addChild(newAnnotation : [string, number, number, number], parent : annotation_segment) {
+            const [annotation, start, end, event_colour] = newAnnotation;
+            if (parent.children.length === 0) { // no more children so just add it
+                parent.children.push({
+                    start: start,
+                    end: end,
+                    text: data.context.slice(start, end),
+                    is_annotation: true,
+                    annotation_type: annotation,
+                    children: [],
+                    event_colour
+                });
+                
+                if (end > parent.end) { // extending the range of the parent annotation (since child annotation extends out of parent annotation)
+                    parent.end = end;
+                }
+            }
+            else {  // check if newAnnotation overlaps with any children, REMEMBER, ANNOATIONS ARE SORTED BY START INDEX
+                let found = false;
+                for (let i = 0; i < parent.children.length; i++) {
+                    const child = parent.children[i];
+                    if (start >= child.start && start < child.end) { // newAnnotation starts in child annotation
+                        addChild(newAnnotation, child); // recursively add newAnnotation as a child of the child annotation
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    parent.children.push({
+                                start: start,
+                                end: end,
+                                text: data.context.slice(start, end),
+                                is_annotation: true,
+                                annotation_type: annotation,
+                                children: [],
+                                event_colour
+                            });
+
+                    if (end > parent.end) { // extending the range of the parent annotation (since child annotation extends out of parent annotation)
+                        parent.end = end;
+                    }
+                }
+
+            }
+        }
     }
 
 </script>
@@ -274,7 +279,8 @@
             isAnnotation={segment.is_annotation} 
             annotation={segment.annotation_type} 
             children={segment.children} 
-            popupToggle={popupToggle}/>
+            popupToggle={popupToggle}
+            event_colour={segment.event_colour}/>
     {/each}
 </div>
 

@@ -6,8 +6,24 @@
   export let text: string = '';
   export let start : number;
   export let end : number;
-  export let children: annotation_segment[] = [];  // start, end, AnnotationSegment
+  export let children: annotation_segment[] = [];  // start, end, AnnotationSegment, event_colour
   export let popupToggle: boolean = false;
+  export let event_colour : number = 0;
+
+  const event_styles = [
+    "bg-event_0 rounded border-black border",
+    "bg-event_1 rounded border-black border",
+    "bg-event_2 rounded border-black border",
+    "bg-event_3 rounded border-black border",
+    "bg-event_4 rounded border-black border",
+    "bg-event_5 rounded border-black border",
+    "bg-event_6 rounded border-black border",
+    "bg-event_7 rounded border-black border",
+    "bg-event_8 rounded border-black border",
+    "bg-event_9 rounded border-black border",
+  ];
+  $: segmentStyling = event_styles[event_colour];
+
 
   let textSpliced: string[] = [];
   
@@ -20,6 +36,7 @@
     children = children;
     textSpliced = spliceText();
     popupToggle = popupToggle;
+    event_colour = event_colour;
   }
 
   function spliceText() { // correctly split text among parent and children
@@ -46,7 +63,7 @@
 <svelte:options accessors={true}/>
 
 <div class="group relative flex flex-row align-middle">
-  <span class:rounded={isAnnotation} class="px-2 py-1" role="presentation">
+  <span class="px-2 py-1 {isAnnotation ? segmentStyling: ''}" role="presentation">
     <span class="flex items-center">
       {#each textSpliced as part, i}
         {part}
@@ -58,7 +75,8 @@
               text={children[i].text} 
               annotation={children[i].annotation_type} 
               isAnnotation={children[i].is_annotation}
-              popupToggle={popupToggle} />
+              popupToggle={popupToggle} 
+              event_colour={children[i].event_colour}/>
           </div>
         {/if}
       {/each}
@@ -81,11 +99,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .rounded {
-    border-radius: 0.25rem;
-    background-color: #32f22c;
-    border: black 1px solid;
-  }
-</style>

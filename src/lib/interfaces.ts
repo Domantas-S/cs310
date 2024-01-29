@@ -85,4 +85,13 @@ export interface annotation_segment{
     is_annotation: boolean,
     annotation_type: string,
     children: annotation_segment[],
+    event_colour: number, // the ith event of the record, starting from 0, used for colouring different events
+}
+
+export interface query {
+    id: number,
+    key: string, 
+    subkey: string, 
+    searchTerm: string, 
+    exclude: boolean
 }

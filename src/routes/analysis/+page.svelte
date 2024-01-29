@@ -6,8 +6,11 @@
     import { Paginator, type PaginationSettings, type ModalSettings } from '@skeletonlabs/skeleton';
     import { getModalStore } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
-    import plusIcon from '@iconify/icons-material-symbols/add'
+    import plusIcon from '@iconify/icons-material-symbols/add';
+    import { queries, addQuery } from '$lib/stores/Queries.js';
 			
+    export let data;
+
     const modalStore = getModalStore();
     const modal: ModalSettings = {
         type: 'confirm',
@@ -43,11 +46,9 @@
         },
     };
 
-    export let data;
+    let queryCount = 1; // start with 1 because store is initialised with 1 blank query
     let input: InputType | null = null;
     let results : record[] = [];
-    let queries : {key: string, subkey: string, searchTerm: string, exclude: boolean}[] = [{key: '', subkey: '', searchTerm: '', exclude: false}];
-    let destroyQueries : boolean[] = [];
     let raw = false;
     let popupToggle = false;
 
@@ -60,24 +61,8 @@
 
 
     function addBlankQuery() {
-        queries = [...queries, {key: '', subkey: '', searchTerm: '', exclude: false}];
-        destroyQueries = [...destroyQueries, false];
-    }
-
-    $: {
-        destroyQueries.forEach((destroy, i) => {
-            if (destroy) {
-                removeQuery(i);
-            }
-        });
-    }
-
-    function removeQuery(index : number) {
-        queries.splice(index, 1);
-        queries = queries.slice(); // to trigger reactivity
-
-        destroyQueries.splice(index, 1);
-        destroyQueries = destroyQueries.slice(); // to trigger reactivity
+        addQuery({id: queryCount, key: '', subkey: '', searchTerm: '', exclude: false});
+        queryCount++;
     }
 
     $: paginatedResults = results.slice(paginationSettings.page * paginationSettings.limit, 
@@ -101,18 +86,19 @@
 
     $: {    // execute queries dynamically
         (async () => {
-            if (queries.length === 0) {
+            if ($queries.length === 0) {
                 results = [];
                 return;
             }
-            let queryResults = await execQuery(queries[0].key, queries[0].subkey, queries[0].searchTerm, queries[0].exclude);
+            let queryResults = await execQuery($queries[0].key, $queries[0].subkey, $queries[0].searchTerm, $queries[0].exclude);
             let intersection: Set<any> = new Set(queryResults.map((record : record) => record.id)); // intersect by ID, since ID is (should be) unique
             if (intersection.size === 0) {  // if no results from first query, return
                 results = [];
                 return;
             }
-            for (let i = 1; i < queries.length; i++) {
-                queryResults = await execQuery(queries[i].key, queries[i].subkey, queries[i].searchTerm, queries[i].exclude);
+            for (let i = 1; i < $queries.length; i++) {
+                if ($queries[i].key === '') continue;  // skip empty queries
+                queryResults = await execQuery($queries[i].key, $queries[i].subkey, $queries[i].searchTerm, $queries[i].exclude);
                 let set = new Set(queryResults.map((record : record) => record.id));
                 intersection = new Set([...intersection].filter(x => set.has(x)));
             }
@@ -138,8 +124,8 @@
 <div class="container h-full mx-auto flex justify-center items-center">
     {#if input === InputType.Parameters}
         <div>
-            {#each queries as query, i (i)}
-                <Query bind:query={query} bind:destroy={destroyQueries[i]} on:destroy={() => removeQuery(i)} />
+            {#each $queries as query (query.id)}
+                <Query bind:id={query.id} />
                 <div class="py-2"/>
             {/each}
             <div class="flex justify-center py-5">
