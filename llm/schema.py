@@ -52,7 +52,7 @@ class Event(EventInfo):
     Treatment: Optional[Treatment]
 
 class Record(BaseModel):
-    # id: str
+    id: str
     context: str
     is_mult_event: bool
     annotations: List[Event]
