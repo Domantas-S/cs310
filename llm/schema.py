@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class Common(BaseModel):
     text: List[List[str]]
     start: List[List[str]]
-    # entity_id: List[List[str]]    # Exclude entity_id from the schema
+    entity_id: List[List[str]]
 
 class ValuedCommonBool(Common):
     value: bool
