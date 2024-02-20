@@ -1,0 +1,756 @@
+{
+  "context": "Medical",
+  "is_mult_event": false,
+  "annotations": [
+    {
+      "event_type": "Warning",
+      "event_id": "PLP_after_paclitaxel",
+      "Effect": {
+        "text": [
+          ["Physicians should be aware that PLP can occur after initiation of paclitaxel."],
+          ["PLP is a potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLP can be prevented or minimized by administering dexamethasone before paclitaxel infusion, and by monitoring patients closely for early signs of the condition."],
+          ["It is important for physicians to be aware of the risk of PLP when prescribing paclitaxel, and to take steps to prevent or minimize the risk for their patients."],
+          ["PLP is a serious condition that requires prompt medical attention, and patients who experience symptoms of the condition should seek medical help immediately."],
+          ["PLP is a rare but potentially life-threatening condition that can occur after initiation of paclitaxel therapy."],
+          ["PLP is a severe reaction to paclitaxel that can cause damage to the nerves, leading to permanent nerve damage and loss of sensation."],
+          ["PLP can occur at any time during paclitaxel treatment, but it is most commonly seen within the first 24 hours of the first infusion."],
+          ["Symptoms of PLP include tingling, numbness, or pain in the hands and feet, as well as weakness and cramping in the arms and legs."],
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Trigger":
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Treatment"
+         
+
+:
+         
+
+{
+         
+
+"Trigger":
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"Drug":
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Dosage":
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Duration"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Disorder"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Time_elapsed"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"Combination":
+         
+
+[
+         
+
+]
+         
+
+,
+         
+
+"Route"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Freq"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+}
+         
+
+,
+         
+
+"Severity"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"value":
+         
+
+"Trigger: ["
+         
+
+}
+         
+
+,
+         
+
+"Subject"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"Disorder"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"Age"
+         
+
+:
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+}
+         
+
+,
+         
+
+"Population":
+         
+
+{
+         
+
+"text":
+         
+
+[
+          ["PLPacet caption: ["
+         
+
+]
+         
+
+]
+         
+
+,
+         
+
+"start":
+         
+
+[

@@ -8,9 +8,9 @@ export interface record {
 export interface event extends event_info {
     Effect?: common,
     Trigger?: common,
-    Negated?: valued_common,
-    Severity?: valued_common,
-    Speculated?: valued_common,
+    Negated?: valued_common_bool,
+    Severity?: valued_common_str,
+    Speculated?: valued_common_bool,
 
     Subject?: subject,
     Treatment?: treatment,
@@ -27,8 +27,12 @@ export interface common {
     entity_id: string[][],
 }
 
-export interface valued_common extends common {
+export interface valued_common_bool extends common {
     value: boolean
+}
+
+export interface valued_common_str extends common {
+    value: string
 }
 
 
