@@ -10,8 +10,15 @@
     $: { 
         data = data;
         popupToggle = popupToggle;
-        annotations = extractAnnotations(data).sort((a, b) => a[1] - b[1] || b[2] - a[2]);
-        segments = generateSegments2(annotations);
+        try{
+            annotations = extractAnnotations(data).sort((a, b) => a[1] - b[1] || b[2] - a[2]);
+            segments = generateSegments2(annotations);
+        }
+        catch(e){
+            console.error("Error extracting annotations: ", e);
+            annotations = [];
+            segments = [];
+        }
     }
 
 
@@ -271,19 +278,23 @@
 </script>
 
 <div class="flex flex-wrap flex-row justify-center items-center">
-    {#each segments as segment}
-        <AnnotationSegment 
-            start={segment.start} 
-            end={segment.end} 
-            text={segment.text} 
-            isAnnotation={segment.is_annotation} 
-            annotation={segment.annotation_type} 
-            children={segment.children} 
-            popupToggle={popupToggle}
-            event_colour={segment.event_colour}/>
-    {/each}
+    {#if !annotations || annotations.length === 0 || !segments || segments.length === 0}
+        <p style="color: red;">There was a problem extracting annotations.</p>
+        {#if data.context}
+            <p>{data.context}</p>
+        {/if}
+    {:else}
+        {#each segments as segment}
+            <AnnotationSegment 
+                start={segment.start} 
+                end={segment.end} 
+                text={segment.text} 
+                isAnnotation={segment.is_annotation} 
+                annotation={segment.annotation_type} 
+                children={segment.children} 
+                popupToggle={popupToggle}
+                event_colour={segment.event_colour}/>
+        {/each}
+    {/if}
 </div>
 
-<!-- <div>
-    <p>{JSON.stringify(extractAnnotations(data))}</p>
-</div> -->

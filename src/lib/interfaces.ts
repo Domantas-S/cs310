@@ -24,7 +24,7 @@ export interface event_info {
 export interface common {
     text: string[][],
     start: number[][],
-    entity_id: string[][],
+    entity_id?: string[][],
 }
 
 export interface valued_common_bool extends common {

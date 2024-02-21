@@ -7,6 +7,7 @@ export async function GET ({ url }) {
     let subkey = url.searchParams.get('subkey');
     let target = url.searchParams.get('target');
     let exclude = url.searchParams.get('exclude');
+    let source = url.searchParams.get('source');
     if (key == null) {
         return new Response(JSON.stringify({ error: "Missing key parameter" }), { status: 400 });
     }

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { InputType } from '$lib/datatypes';
+    import { InputType, DataSource } from '$lib/datatypes';
     import type { record } from '$lib/interfaces';
     import Record from '$lib/common/Record.svelte';
     import Query from '$lib/common/Query.svelte';
@@ -7,7 +7,9 @@
     import { getModalStore } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
     import plusIcon from '@iconify/icons-material-symbols/add';
+    import eyeIcon from '@iconify/icons-material-symbols/visibility';
     import { queries, addQuery } from '$lib/stores/Queries.js';
+	import CompareRecords from '$lib/common/CompareRecords.svelte';
 			
     export let data;
 
@@ -51,6 +53,8 @@
     let results : record[] = [];
     let raw = false;
     let popupToggle = false;
+    let source : DataSource = DataSource.HUMAN_ANNOTATED;
+    let showExampleComparison = false;
 
     let paginationSettings = {
         page: 0,
@@ -71,12 +75,12 @@
 
 
 
-    async function execQuery(key : string, subkey : string, searchTerm : string = '', exclude : boolean = false) {  // calling endpoint
+    async function execQuery(key : string, subkey : string, searchTerm : string = '', exclude : boolean = false, source: DataSource) {  // calling endpoint
         if (key === '') {
             return [];
         }
 
-        const response = await fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey + "&target=" + searchTerm + "&exclude=" + exclude, {
+        const response = await fetch("/api/get_info" + "?key=" + key + "&subkey=" + subkey + "&target=" + searchTerm + "&exclude=" + exclude + "&source=" + source, {
             method: "GET",
         });
 
@@ -90,7 +94,7 @@
                 results = [];
                 return;
             }
-            let queryResults = await execQuery($queries[0].key, $queries[0].subkey, $queries[0].searchTerm, $queries[0].exclude);
+            let queryResults = await execQuery($queries[0].key, $queries[0].subkey, $queries[0].searchTerm, $queries[0].exclude, source);
             let intersection: Set<any> = new Set(queryResults.map((record : record) => record.id)); // intersect by ID, since ID is (should be) unique
             if (intersection.size === 0) {  // if no results from first query, return
                 results = [];
@@ -98,7 +102,7 @@
             }
             for (let i = 1; i < $queries.length; i++) {
                 if ($queries[i].key === '') continue;  // skip empty queries
-                queryResults = await execQuery($queries[i].key, $queries[i].subkey, $queries[i].searchTerm, $queries[i].exclude);
+                queryResults = await execQuery($queries[i].key, $queries[i].subkey, $queries[i].searchTerm, $queries[i].exclude, source);
                 let set = new Set(queryResults.map((record : record) => record.id));
                 intersection = new Set([...intersection].filter(x => set.has(x)));
             }
@@ -116,9 +120,32 @@
             <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Text}}>Text Input</button>
             <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Parameters}}>Parameters</button>
         </span>
+        <div class="py-5"></div>
+        <!-- Source selector -->
+        <div class="flex justify-center items-center">
+            <label for="source">Data source:</label>
+            <div class="px-2"></div>
+            <select class="select" id="source" bind:value={source}>
+                <option value={DataSource.HUMAN_ANNOTATED}>Human annotated</option>
+                <option value={DataSource.MIXTRAL_8X7B_INSTRUCT}>Mixtral 8x7B Instruct (v0.1 Q5_K_M)</option>
+                <option value={null} disabled>More to come...</option>
+            </select>
+        </div>
     </div>
 </div>
 
+<div class="flex justify-center items-center py-5">
+    <button type="button" class="btn variant-filled" on:click={() => showExampleComparison = !showExampleComparison}>
+        <span><Icon icon={eyeIcon}/></span>
+        <span>Example comparison</span>
+    </button>
+</div>
+
+<div class="px-5">
+    {#if showExampleComparison}
+        <CompareRecords />
+    {/if}
+</div>
 <div class="p-5"></div>
     
 <div class="container h-full mx-auto flex justify-center items-center">
