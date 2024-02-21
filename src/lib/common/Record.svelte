@@ -3,16 +3,21 @@
     import Icon from '@iconify/svelte';
     import dataIcon from '@iconify/icons-material-symbols/code';
     import notesIcon from '@iconify/icons-material-symbols/notes';
+    import compareIcon from '@iconify/icons-material-symbols/compare';
 
     import JsonRecord from './JSONRecord.svelte';
 	import AnnotatedRecord from './AnnotatedRecord.svelte';
-  
+	import CompareRecords from './CompareRecords.svelte';
+	import type { DataSource } from '$lib/datatypes';
+
     export let info: record;
     export let currentRecord: number;
     export let totalRecords: number;
     export let raw = false;
+    export let source: DataSource;
 
     export let popupToggle = false;
+    export let compareToggle = false;
 
     $: {
         info = info;
@@ -20,6 +25,7 @@
         totalRecords = totalRecords;
         raw = raw;
         popupToggle = popupToggle;
+        compareToggle = compareToggle;
     }
 
 </script>
@@ -28,14 +34,19 @@
     <div class="flex grid grid-cols-3">
         <p class="flex justify-begin"><i>{`${currentRecord} / ${totalRecords}`}</i></p>
         <p><strong>{info.annotations[0].event_type}</strong></p>
-        <div class="flex justify-end">
+        <div class="flex justify-end space-x-2">
             {#if !raw}
+                <!-- Compare annotations button with different models -->
+                <button class="btn-icon btn-icon-sm variant-filled" on:click={() => compareToggle = !compareToggle}>
+                    <Icon icon={compareIcon} />
+                </button>
+
                 <!-- Toggle annotations buttons -->
                 <button class="btn-icon btn-icon-sm variant-filled" on:click={() => popupToggle = !popupToggle}>    
                     <Icon icon={notesIcon} />
                 </button>
-                <div class="px-1"></div>
             {/if}
+
             <button
                 class="btn-icon btn-icon-sm variant-filled"
                 on:click={() => raw = !raw}>
@@ -46,9 +57,10 @@
     <div class="py-2"></div>
     
     <!-- Annotated record -->
-    {#if !raw}
-        <!-- <p>{info.context}</p> -->
+    {#if !raw && !compareToggle}
         <AnnotatedRecord data={info} popupToggle={popupToggle}/>
+    {:else if compareToggle}
+        <CompareRecords data={info} originalSource={source} popupToggle={popupToggle}/>
     {:else} 
         <JsonRecord data={info}></JsonRecord>
     {/if}

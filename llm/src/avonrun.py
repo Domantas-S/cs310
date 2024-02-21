@@ -7,7 +7,7 @@ from transformers import pipeline, AutoTokenizer
 from accelerate import Accelerator
 from llama_cpp import Llama, LogitsProcessorList
 from typing import Optional
-from schema import Record
+from llm.src.schema import Record
 
 
 # config = AutoConfig.from_pretrained("TheBloke/Llama-2-7b-Chat-GGUF")

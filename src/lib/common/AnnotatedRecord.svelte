@@ -7,6 +7,7 @@
     let annotations = [] as [string, number, number, number][];
 
     let segments : annotation_segment[] = [];
+
     $: { 
         data = data;
         popupToggle = popupToggle;

@@ -10,6 +10,7 @@
     import eyeIcon from '@iconify/icons-material-symbols/visibility';
     import { queries, addQuery } from '$lib/stores/Queries.js';
 	import CompareRecords from '$lib/common/CompareRecords.svelte';
+	import SourceSelector from '$lib/common/SourceSelector.svelte';
 			
     export let data;
 
@@ -68,6 +69,10 @@
         addQuery({id: queryCount, key: '', subkey: '', searchTerm: '', exclude: false});
         queryCount++;
     }
+    $: {
+        popupToggle = popupToggle;
+        source = source;
+    }
 
     $: paginatedResults = results.slice(paginationSettings.page * paginationSettings.limit, 
         (paginationSettings.page * paginationSettings.limit) + paginationSettings.limit);
@@ -125,11 +130,7 @@
         <div class="flex justify-center items-center">
             <label for="source">Data source:</label>
             <div class="px-2"></div>
-            <select class="select" id="source" bind:value={source}>
-                <option value={DataSource.HUMAN_ANNOTATED}>Human annotated</option>
-                <option value={DataSource.MIXTRAL_8X7B_INSTRUCT}>Mixtral 8x7B Instruct (v0.1 Q5_K_M)</option>
-                <option value={null} disabled>More to come...</option>
-            </select>
+            <SourceSelector bind:source={source}/>
         </div>
     </div>
 </div>
@@ -143,7 +144,7 @@
 
 <div class="px-5">
     {#if showExampleComparison}
-        <CompareRecords />
+        <CompareRecords originalSource={source}/>
     {/if}
 </div>
 <div class="p-5"></div>
@@ -211,7 +212,8 @@
                             currentRecord={(paginationSettings.page * paginationSettings.limit) + index + 1} 
                             totalRecords={results.length} 
                             raw={raw}
-                            popupToggle={popupToggle}/>
+                            popupToggle={popupToggle}
+                            source={source}/>
                     {/key}
                 <div class="py-5"/>
             {/each}

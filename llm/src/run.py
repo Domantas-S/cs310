@@ -3,7 +3,7 @@ from lmformatenforcer import JsonSchemaParser
 from lmformatenforcer.integrations.transformers import build_transformers_prefix_allowed_tokens_fn
 from ctransformers import AutoModelForCausalLM
 from transformers import pipeline, AutoTokenizer
-from schema import Record
+from llm.src.schema import Record
 
 
 # config = AutoConfig.from_pretrained("TheBloke/Llama-2-7b-Chat-GGUF")

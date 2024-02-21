@@ -4,7 +4,7 @@ from lmformatenforcer.integrations.transformers import build_transformers_prefix
 from lmformatenforcer.integrations.llamacpp import build_llamacpp_logits_processor, build_token_enforcer_tokenizer_data
 from llama_cpp import Llama, LogitsProcessorList
 from typing import Optional
-from schema import Record
+from llm.src.schema import Record
 
 
 # config = AutoConfig.from_pretrained("TheBloke/Llama-2-7b-Chat-GGUF")
