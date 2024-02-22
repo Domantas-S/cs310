@@ -31,11 +31,17 @@
 				<button type="button" on:click={() => {goto('/')}} class="btn btn-sm variant-filled">
 					Home
 				</button>
-			</svelte:fragment>
 
-			<svelte:fragment>
+				<div class="px-2"/>
+
 				<button type="button" on:click={() => {goto('/analysis')}} class="btn btn-sm variant-filled">
 					Data Analysis
+				</button>
+				
+				<div class="px-2"/>
+
+				<button type="button" on:click={() => {goto('/annotate')}} class="btn btn-sm variant-filled">
+					Annotate
 				</button>
 			</svelte:fragment>
 			

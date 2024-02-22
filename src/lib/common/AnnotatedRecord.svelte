@@ -280,10 +280,12 @@
 
 <div class="flex flex-wrap flex-row justify-center items-center">
     {#if !annotations || annotations.length === 0 || !segments || segments.length === 0}
-        <p style="color: red;">There was a problem extracting annotations.</p>
-        {#if data.context}
-            <p>{data.context}</p>
-        {/if}
+        <div class="text-center">    
+            <p style="color: red;">There was a problem extracting annotations.</p>
+            {#if data.context}
+                <p>{data.context}</p>
+            {/if}
+        </div>
     {:else}
         {#each segments as segment}
             <AnnotationSegment 

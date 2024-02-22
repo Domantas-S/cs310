@@ -35,12 +35,12 @@
 
 </script>
   
-  <div class="card flex">
+  <div class="flex space-x-3">
     <div class="border rounded border-gray-300 p-1 text-center space-y-1">
         <h5>{dataSourceToString(originalSource)}</h5>
         <AnnotatedRecord data={data} popupToggle={popupToggle}/>
     </div>
-    <div class="px-2"></div>
+    <span class="divider-vertical" />
     <div class="border rounded border-gray-300 p-1 text-center space-y-1">
         <SourceSelector bind:source={comparisonSource}/>
         {#if comparisonData == null}
