@@ -63,11 +63,15 @@ with open("train.json", "r") as file:
             Given an electronic health record, extract the relevant information to produce a JSON of the following schema:
             {str(Record.schema_json())}
             {extra_info}
-            Start means the starting index of where that annotation appears within the text.
+            Start is the starting index of where that annotation appears within the text.
             Event type must be either of Adverse_event or Potential_therapeutic_effect.
-            If an optional field is not present, it should be omitted from the JSON.
+            If an optional field is not present, it should be entirely omitted from the JSON. Required fields must not be empty.
+            Ensure the JSON is valid and contains the correct data types.
             For example: '12962465_2 Gynaecomastia is a rarely reported adverse drug reaction due to isoniazid therapy.'
             {'{"id": "12962465_2", "context": "Gynaecomastia is a rarely reported adverse drug reaction due to isoniazid therapy.", "is_mult_event": false, "annotations": [{"events": [{"event_id": "E1", "event_type": "Adverse_event", "Trigger": {"text": [["adverse drug reaction"]], "start": [[35]], "entity_id": ["T4"]}, "Treatment": {"text": [["isoniazid therapy"]], "start": [[64]], "entity_id": ["T3"], "Drug": {"text": [["isoniazid"]], "start": [[64]], "entity_id": ["T6"]}}, "Effect": {"text": [["Gynaecomastia"]], "start": [[0]], "entity_id": ["T5"]}}]}]}'}
+            Another example: '7986915_2 We describe a patient with a liver abscess due to Entamoeba histolytica, in whom metronidazole therapy (total dose, 21 g over 14 days) was complicated by reversible deafness, tinnitus, and ataxia and who relapsed 5 months later with a splenic abscess.'
+            {'{"id": "7986915_2", "context": "We describe a patient with a liver abscess due to Entamoeba histolytica, in whom metronidazole therapy (total dose, 21 g over 14 days) was complicated by reversible deafness, tinnitus, and ataxia and who relapsed 5 months later with a splenic abscess.", "is_mult_event": false, "annotations": [{"events": [{"event_id": "E1", "event_type": "Adverse_event", "Trigger": {"text": [["complicated"]], "start": [[139]], "entity_id": ["T13"]}, "Subject": {"text": [["a patient with a liver abscess due to Entamoeba histolytica"]], "start": [[12]], "entity_id": ["T11"]}, "Treatment": {"text": [["metronidazole therapy (total dose, 21 g over 14 days)"]], "start": [[81]], "entity_id": ["T12"], "Drug": {"text": [["metronidazole"]], "start": [[81]], "entity_id": ["T17"]}, "Dosage": {"text": [["21 g"]], "start": [[116]], "entity_id": ["T18"]}, "Duration": {"text": [["14 days"]], "start": [[126]], "entity_id": ["T19"]}, "Disorder": {"text": [["liver abscess"], ["Entamoeba histolytica"]], "start": [[29], [50]], "entity_id": ["T20", "T21"]}}, "Effect": {"text": [["reversible deafness, tinnitus, and ataxia and who relapsed 5 months later with a splenic abscess"]], "start": [[154]], "entity_id": ["T14"]}}]}]}'}
+            
             Now try the same with this sentence: {prompt_record} [/INST]"""
 
         result = llamacpp_with_character_level_parser(prompt, parser)

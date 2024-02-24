@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class Common(BaseModel):
     text: List[List[str]]
-    start: List[List[str]]
+    start: List[List[int]]
     entity_id: List[List[str]]
 
 class ValuedCommonBool(Common):

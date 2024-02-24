@@ -1,3 +1,4 @@
+import { DataSource } from "$lib/datatypes";
 import sql from "./db";
 
 export async function searchRecord(keyword : string) {
@@ -67,4 +68,18 @@ export async function searchAnnotationWithMatching(key: string, subkey: string, 
         WHERE arr.event_obj ? ${key} AND arr.event_obj->${key} ? ${subkey} AND POSITION(LOWER(${target}) IN LOWER(context)) > 0;`
         return result;
     }
+}
+
+export async function getRecordByIDandSource(id : string, source : DataSource){
+    const tableName = source == DataSource.HUMAN_ANNOTATED ? "phee" : "mixtral";
+
+    switch (source) {
+        case DataSource.HUMAN_ANNOTATED:
+            return await sql`SELECT * FROM phee WHERE id = ${id};`;
+        case DataSource.MIXTRAL_8X7B_INSTRUCT:
+            return await sql`SELECT * FROM mixtral WHERE id = ${id};`;
+        default:
+            return [];
+    }
+
 }

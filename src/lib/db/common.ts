@@ -1,4 +1,4 @@
-import type { record, event, common, valued_common, subject, treatment, combination } from '$lib/interfaces';
+import type { record, event, common, valued_common_str, valued_common_bool, subject, treatment, combination } from '$lib/interfaces';
 import type { Row } from 'postgres';
 
 // credit: Typescript documentation, src 
@@ -34,12 +34,13 @@ function rowToEvents(row : Row) : event[] {
             event_type : event.event_type,
             event_id : event.event_id,
         };
-
         for (let field in event){
             if (field == "Effect" || field == "Trigger" ) {
                 obj[field] = objToCommon(event[field]);
-            } else if (field == "Negated" || field == "Severity" || field == "Speculated" ) {
-                obj[field] = objToValuedCommon(event[field]);
+            } else if (field == "Negated" ||  field == "Speculated" ) {
+                obj[field] = objToValuedCommonBool(event[field]);
+            } else if (field == "Severity") {
+                obj[field] = objToValuedCommonstr(event[field]);
             } else if (field == "Subject") {
                 obj[field] = objToSubject(event[field]);
             } else if (field == "Treatment") {
@@ -52,24 +53,37 @@ function rowToEvents(row : Row) : event[] {
 
 }
 
-function objToCommon(data : any) : common {
+function objToCommon(data : any) : common | undefined {
+    if (!data) return undefined;
     return {
-        text : data.text,
-        start : data.start,
-        entity_id : data.entity_id,
+        text : data.text != null ? data.text : 'Missing common text',
+        start : data.start != null ? data.start : 0,
+        entity_id : data.entity_id != null ? data.entity_id : 'Missing common entity_id',
     };
 }
 
-function objToValuedCommon(data : any) : valued_common {
+function objToValuedCommonBool(data : any) : valued_common_bool | undefined{
+    if (!data) return  undefined;
     return {
-        text : data.text,
-        start : data.start,
-        entity_id : data.entity_id,
-        value : data.value,
+        text : data.text != null ? data.text : 'Missing common text',
+        start : data.start != null ? data.start : 0,
+        entity_id : data.entity_id != null ? data.entity_id : 'Missing common entity_id',
+        value : data.value != null ? data.value : false,
     };
 }
 
-function objToSubject(data : any) : subject {
+function objToValuedCommonstr(data : any) : valued_common_str | undefined{
+    if (!data) return  undefined;
+    return {
+        text : data.text != null ? data.text : 'Missing common text',
+        start : data.start != null ? data.start : 0,
+        entity_id : data.entity_id != null ? data.entity_id : 'Missing common entity_id',
+        value : data.value != null ? data.value : 'Missing common value',
+    };
+}
+
+function objToSubject(data : any) : subject | undefined{
+    if (!data) return  undefined;
     let res : any = {};
     Object.assign(res, objToCommon(data));
     for (let field in data) {
@@ -80,7 +94,8 @@ function objToSubject(data : any) : subject {
     return res as subject;
 }
 
-function objToTreatment(data : any) : treatment {
+function objToTreatment(data : any) : treatment | undefined {
+    if (!data) return  undefined;
     let res : any = objToCommon(data);
     for (let field in data) {
         if (['Drug', 'Disorder', 'Dosage', 'Duration', 'Trigger', 'Route', 'Time_elapsed', 'Freq'].includes(field)){
@@ -92,7 +107,8 @@ function objToTreatment(data : any) : treatment {
     return res as treatment;
 }
 
-function objToCombination(data : any) : combination[] {
+function objToCombination(data : any) : combination[] | undefined {
+    if (!data) return  undefined;
     const result : combination[] = [];
     for (let i = 0; i < data.length; i++) {
         const obj = data[i];
@@ -111,7 +127,6 @@ function objToCombination(data : any) : combination[] {
 }
 
 export function getAnnotationText(record : record, key : string, subkey : string) : any {
-    // console.log(record);
     const events = record.annotations;
     const result : any = [];
     let e : any;

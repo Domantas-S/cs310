@@ -25,11 +25,22 @@
         getComparisonRecord();
     }
 
-    function getComparisonRecord() {
-        if (originalSource == DataSource.HUMAN_ANNOTATED) {
-            comparisonData = exampleRecord1LLM;
+    async function getComparisonRecord() {
+        const response = await fetch("/api/get_record" + "?id=" + data.id + "&source=" + comparisonSource, {
+            method: "GET",
+        });
+
+        if (response.ok) {
+            console.log(response.text);
+            try {
+                comparisonData = await response.json();
+            } catch (e) {
+                console.error('Error retrieving comparison record! This record likely does not exist in this source.\n' + e);
+                comparisonData = null;
+            }
+            console.log(comparisonData);
         } else {
-            comparisonData = exampleRecord2Human;
+            comparisonData = null;
         }
     }
 
