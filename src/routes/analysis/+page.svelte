@@ -117,8 +117,14 @@
 
 </script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-    <div class="card p-4 items-center h-full text-center">
+<div class="container mx-auto">
+    
+    <h1 class="h1">Analysis</h1>   
+    <div class="py-1"></div>
+    <p>Search through database of annotated EHRs.</p>
+    <div class="py-3"></div>
+    
+    <div class="card p-4 items-center text-center mx-auto max-w-fit">
         <h2>Select input type</h2>
         <div class="py-3"></div>
         <span class="px-20 space-x-20">
@@ -165,7 +171,8 @@
         </div>
     {:else if input === InputType.Text}
         <div class="card p-4 items-center h-full text-center">
-            Text input
+            <h5 class="h5">Work in progress</h5>
+            <p>Use natural language to search through the database and extract relevant records.</p>
         </div>
     {/if}
 </div>
