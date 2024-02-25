@@ -51,8 +51,11 @@ class Event(EventInfo):
     Subject: Optional[Subject]
     Treatment: Optional[Treatment]
 
+class Events(BaseModel):
+    events: List[Event]
+
 class Record(BaseModel):
     id: str
     context: str
     is_mult_event: bool
-    annotations: List[Event]
+    annotations: List[Events]

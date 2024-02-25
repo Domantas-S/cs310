@@ -3,7 +3,7 @@
   import JSONTree from 'svelte-json-tree';
   import CopyButton from './CopyButton.svelte';
   
-  export let data: record;
+  export let data: object = {};
   const value = { record: data };
 </script>
 

@@ -43,6 +43,9 @@
   "dependencies": {
     "@floating-ui/dom": "1.5.3",
     "highlight-words": "^1.2.2",
+    "highlight.js": "^11.9.0",
+    "json-schema-to-typescript": "^13.1.2",
+    "json2ts": "^0.0.7",
     "pg": "^8.11.3",
     "postgres": "^3.4.3",
     "svelte-json-tree": "^2.2.0",
