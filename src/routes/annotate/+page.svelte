@@ -98,42 +98,42 @@
     
     <div class="py-5" />
 
-    <div class="grid grid-cols-5">
+    <div class="grid grid-cols-5 space-x-5">
         <div class="card p-5 col-span-2">
-            <textarea class="textarea" rows=16 cols=50 placeholder="Enter a medical record here" bind:value={text}></textarea>
-        </div>
-        <div class="py-3 col-span-1">
-            <div class="flex justify-center items-center">
-                <Icon icon={rightArrow} class="text-6xl" />
+            <textarea class="textarea" rows=8 cols=50 placeholder="Enter a medical record here" bind:value={text}></textarea>
+            <div class="py-3 col-span-1">
+                <!-- <div class="flex justify-center items-center">
+                    <Icon icon={rightArrow} class="text-6xl" />
+                </div> -->
+                
+                <div class="py-1" />
+    
+                <div class="px-5">
+                    <p class="text-sm italic">Select model for annotations:</p>
+                    <select class="select" id="model" bind:value={model}>
+                        <option value={"default"}>Default</option>
+                        <option value={null} disabled>More to come...</option>
+                    </select>
+    
+                    <div class="py-2" />
+                    <div class="flex justify-center">
+                        <button class="btn btn-sm variant-filled rounded-md" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
+                    </div>
+                    <div class="py-2"/>
+                    <div class="flex justify-center">
+                        <button class="btn variant-filled-primary rounded-md w-full" on:click={annotate} disabled={waiting}>Annotate</button>
+                    </div>
+                </div>
+    
+                {#if waiting}
+                    <div class="py-2 px-5">
+                        <ProgressBar meter="bg-primary-500" track="bg-primary-500/30"/>
+                    </div>
+                {/if}
+    
             </div>
-            
-            <div class="py-3" />
-
-            <div class="px-5">
-                <p class="text-sm italic">Select model for annotations:</p>
-                <select class="select" id="model" bind:value={model}>
-                    <option value={"default"}>Default</option>
-                    <option value={null} disabled>More to come...</option>
-                </select>
-
-                <div class="py-2" />
-                <div class="flex justify-center">
-                    <button class="btn btn-sm variant-filled rounded-md" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
-                </div>
-                <div class="py-2"/>
-                <div class="flex justify-center">
-                    <button class="btn variant-filled-primary rounded-md w-full" on:click={annotate} disabled={waiting}>Annotate</button>
-                </div>
-            </div>
-
-            {#if waiting}
-                <div class="py-2 px-5">
-                    <ProgressBar meter="bg-primary-500" track="bg-primary-500/30"/>
-                </div>
-            {/if}
-
         </div>
-        <div class="container card p-4 col-span-2">
+        <div class="container card p-4 col-span-3">
             <div>
                 <h3 class="h3">Results</h3>
             </div>
@@ -142,12 +142,10 @@
             <div>
                 <CodeBlock code={result} text="text-xs" language="json" />
             </div>
-            <div class="flex justify-center flex-grow">
-                <!-- <p>{result}</p> -->
-                <!-- <AnnotatedRecord data={blankRecord}/> -->
-                <!-- <p>{result}</p> -->
+            <!-- <div class="flex justify-center flex-grow">
                 <JSONRecord data={JSON.parse(result)}/>
-            </div>
+            </div> -->
+            <!-- ADD AnnotatedRecord here (after either doing some processing on the record or edits to AnnotatedRecord to work with empty start indices) -->
         </div>
     </div>
 </div>
