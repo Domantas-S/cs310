@@ -1,8 +1,8 @@
 
 export const config = {
-    host: 'localhost',
-    port: 5432,
+    host: 'host.docker.internal',
+    port: 5444,
     database: 'phee',
     user: 'postgres',
-    password: ''
+    password: 'postgres'
   };
