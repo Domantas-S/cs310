@@ -14,8 +14,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./static:/app/static
-    env_file:
-      - .env.dev
     
   
   postgres:
