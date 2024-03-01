@@ -141,18 +141,6 @@
     </div>
 </div>
 
-<div class="flex justify-center items-center py-5">
-    <button type="button" class="btn variant-filled" on:click={() => showExampleComparison = !showExampleComparison}>
-        <span><Icon icon={eyeIcon}/></span>
-        <span>Example comparison</span>
-    </button>
-</div>
-
-<div class="px-5">
-    {#if showExampleComparison}
-        <CompareRecords originalSource={source}/>
-    {/if}
-</div>
 <div class="p-5"></div>
     
 <div class="container h-full mx-auto flex justify-center items-center">

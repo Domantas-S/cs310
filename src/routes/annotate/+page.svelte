@@ -2,6 +2,7 @@
 <script lang="ts">
     import Icon from '@iconify/svelte';
     import rightArrow from '@iconify/icons-material-symbols/line-end-arrow';
+    import uploadIcon from '@iconify/icons-material-symbols/file-upload';
     import AnnotatedRecord from '$lib/common/AnnotatedRecord.svelte';
     import JSONRecord from '$lib/common/JSONRecord.svelte';
     import contentCopy from '@iconify/icons-material-symbols/content-copy';
@@ -9,6 +10,7 @@
     import { ProgressBar } from '@skeletonlabs/skeleton';
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+    import { FileButton } from '@skeletonlabs/skeleton';
     
     // Code block and highlighting
     import { CodeBlock } from '@skeletonlabs/skeleton';
@@ -20,7 +22,6 @@
     storeHighlightJs.set(hljs);
 
     const exampleOutput = '{ "id": "x", "context": "It has been suggested that PPE (probable phenylotoxicity) caused by cytarabine does not recur with subsequent cytarabine re-challenge.", "is_mult_event": false, "annotations": [ { "events": [ { "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Effect": { "text": ["does not recur"], "start": ["]["], "entity_id": ["T1"]}, "Trigger": { "text": [ "PPE caused by cytarabine" ], "start": [ "PPE caused by cytarabine" ], "entity_id": ["T1"]}, "Negated": { "text": ["is not recur"], "start": [ "does not recur" ], "entity_id": ["T2"], "value": true}, "Speculated": { "text": ["has been suggested"], "start": [ "It has been suggested" ], "entity_id": ["T3"], "value": true}, "Severity": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T4"], "value": "low"}, "Subject": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T5"], "Age": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T6"]}, "Disorder": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T7"]}, "Gender": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T8"]}, "Population": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T9"]},"Race": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T10"]}}, "Treatment": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T11"],"Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Disorder": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T13"]}, "Dosage": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T14"]}, "Duration": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T15"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}, "Route": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T17"]}, "Time_elapsed": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T18"]}, "Freq": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T19"]},"Combination": [{ "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}}, { "event_type": "Adverse_event", "event_id": "E2", "Drug": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T22"]}, "Trigger": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T23"]}}]}}]}]}'
-    const pythonBackend = "http://localhost:5000/annotate";
     const blankRecord : record = {"id": "0", "context": "No record to display", "is_mult_event": false, "annotations": []}
 
     let schema : string = "A python schema will go here...";
@@ -28,6 +29,7 @@
     let model : string = "default";
     let text : string = "";
     let result : string = exampleOutput;
+    let files: FileList;
 			
     const modalStore = getModalStore();
     const modal : ModalSettings = {
@@ -50,9 +52,8 @@
     async function annotate() {
         waiting = true;
         
-        const response = await fetch(pythonBackend, {
+        const response = await fetch("/api/annotate", {
             method: "POST",
-            mode: "cors",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -62,6 +63,7 @@
         result = await response.text();
         waiting = false;
     }
+
 
 </script>
   
@@ -100,7 +102,7 @@
 
     <div class="grid grid-cols-5 space-x-5">
         <div class="card p-5 col-span-2">
-            <textarea class="textarea" rows=8 cols=50 placeholder="Enter a medical record here" bind:value={text}></textarea>
+            <textarea class="textarea" rows=8 cols=50 placeholder="Enter a medical record here" bind:value={text} disabled={waiting || (files !== undefined)}></textarea>
             <div class="py-3 col-span-1">
                 <!-- <div class="flex justify-center items-center">
                     <Icon icon={rightArrow} class="text-6xl" />
@@ -120,10 +122,19 @@
                         <button class="btn btn-sm variant-filled rounded-md" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
                     </div>
                     <div class="py-2"/>
+
+                    <div class="flex justify-center">
+                        <FileButton name="files" bind:files={files} disabled={waiting} button="btn btn-sm variant-filled rounded-md">
+                            <Icon icon={uploadIcon} />
+                            Upload File
+                        </FileButton>
+                    </div>
+                    <div class="py-2"/>
+
                     <div class="flex justify-center">
                         <button class="btn variant-filled-primary rounded-md w-full" on:click={annotate} disabled={waiting}>Annotate</button>
                     </div>
-                </div>
+                </div> 
     
                 {#if waiting}
                     <div class="py-2 px-5">

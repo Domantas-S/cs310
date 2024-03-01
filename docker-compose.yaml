@@ -7,26 +7,83 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
-    env_file:
-      - .env.dev
+      - 3001:3001
+    depends_on:
+      - postgres
+      - flask-backend
     volumes:
       - ./src:/app/src
       - ./static:/app/static
+    env_file:
+      - .env.dev
+    
   
   postgres:
     container_name: postgres
     image: postgres:14
     restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
     ports:
       - 5444:5432
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+  
+
+  flask-backend:
+    container_name: flask-backend
+    restart: unless-stopped
+    command: flask --app flaskr/app.py run --debug --host="0.0.0.0" --port=5000
+    build:
+      context: ../cs310-flask
+      dockerfile: Dockerfile
+    environment:
+      - PYTHONPATH=/app/flaskr
+    ports:
+      - 5000:5000
+    volumes:
+      - ../cs310-flask:/app
+
+  drug-search-frontend:
+    container_name: drug-search-frontend
+    restart: unless-stopped
+    command: yarn run start
+    build:
+      context: ../drug_search/frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ../drug_search/frontend/src:/usr/src/app/src
+      - ../drug_search/frontend/public:/usr/src/app/public
+      - ../drug_search/frontend/tsconfig.json:/usr/src/app/tsconfig.json
+      - ../drug_search/frontend/package.json:/usr/src/app/package.json
+      - ../drug_search/frontend/yarn.lock:/usr/src/app/yarn.lock
+      - ../drug_search/frontend/vite.config.mts:/usr/src/app/vite.config.mts
+      - ../drug_search/frontend/.prettierignore:/usr/src/app/.prettierignore
+      - ../drug_search/frontend/.prettierrc:/usr/src/app/.prettierrc
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - drug-search-backend
+
+  drug-search-backend:
+    container_name: drug-search-backend
+    restart: unless-stopped
+    command: flask run --debug --host="0.0.0.0" --port=16000
+    build:
+      context: ../drug_search/backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ../drug_search/backend/app:/usr/src/app
+      - ../drug_search/backend/data:/usr/src/data
+    ports:
+      - 16000:16000
+    environment:
+      - FLASK_DEBUG=1
+      - PYTHONPATH=/usr/src/app
 
   
