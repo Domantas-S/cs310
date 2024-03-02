@@ -1,6 +1,6 @@
 services:
-  sveltekit-app:
-    container_name: sveltekit-app
+  drug_watch_analysis_frontend:
+    container_name: drug_watch_analysis_frontend
     restart: unless-stopped
     command: npm run dev -- --host
     build:
@@ -9,15 +9,15 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - postgres
-      - flask-backend
+      - drug_watch_analysis_db
+      - drug_watch_analysis_backend
     volumes:
       - ./src:/app/src
       - ./static:/app/static
     
   
-  postgres:
-    container_name: postgres
+  drug_watch_analysis_db:
+    container_name: drug_watch_analysis_db
     image: postgres:14
     restart: always
     ports:
@@ -31,8 +31,8 @@ services:
       POSTGRES_DB: postgres
   
 
-  flask-backend:
-    container_name: flask-backend
+  drug_watch_analysis_backend:
+    container_name: drug_watch_analysis_backend
     restart: unless-stopped
     command: flask --app flaskr/app.py run --debug --host="0.0.0.0" --port=5000
     build:
@@ -45,10 +45,9 @@ services:
     volumes:
       - ../cs310-flask:/app
 
-  drug-search-frontend:
-    container_name: drug-search-frontend
+  drug_watch_search_frontend:
+    container_name: drug_watch_search_frontend
     restart: unless-stopped
-    command: yarn run start
     build:
       context: ../drug_search/frontend
       dockerfile: Dockerfile.dev
@@ -66,22 +65,20 @@ services:
     environment:
       - NODE_ENV=development
     depends_on:
-      - drug-search-backend
+      - drug_watch_search_backend
 
-  drug-search-backend:
-    container_name: drug-search-backend
+  drug_watch_search_backend:
+    container_name: drug_watch_search_backend
     restart: unless-stopped
-    command: flask run --debug --host="0.0.0.0" --port=16000
     build:
       context: ../drug_search/backend
       dockerfile: Dockerfile.dev
     volumes:
-      - ../drug_search/backend/app:/usr/src/app
-      - ../drug_search/backend/data:/usr/src/data
+      - ../drug_search/backend:/usr/src/app
     ports:
       - 16000:16000
     environment:
       - FLASK_DEBUG=1
-      - PYTHONPATH=/usr/src/app
+      - PYTHONPATH=/usr/src/app/app
 
   
