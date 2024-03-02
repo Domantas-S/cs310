@@ -1,0 +1,19 @@
+{
+	"/": [],
+	"/analysis": [
+		"src/routes/analysis/+page.server.ts"
+	],
+	"/annotate": [],
+	"/api/export": [
+		"src/routes/api/export/+server.ts"
+	],
+	"/api/get_info": [
+		"src/routes/api/get_info/+server.ts"
+	],
+	"/api/get_record": [
+		"src/routes/api/get_record/+server.ts"
+	],
+	"/api/search_records": [
+		"src/routes/api/search_records/+server.ts"
+	]
+}
