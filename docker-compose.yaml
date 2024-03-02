@@ -62,6 +62,7 @@ services:
       - ../drug_search/frontend/vite.config.mts:/usr/src/app/vite.config.mts
       - ../drug_search/frontend/.prettierignore:/usr/src/app/.prettierignore
       - ../drug_search/frontend/.prettierrc:/usr/src/app/.prettierrc
+      - ../drug_search/frontend/index.html:/usr/src/app/index.html
     environment:
       - NODE_ENV=development
     depends_on:
