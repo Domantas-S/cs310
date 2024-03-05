@@ -4,6 +4,9 @@
 		"src/routes/analysis/+page.server.ts"
 	],
 	"/annotate": [],
+	"/api/annotate": [
+		"src/routes/api/annotate/+server.ts"
+	],
 	"/api/export": [
 		"src/routes/api/export/+server.ts"
 	],
