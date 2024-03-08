@@ -3,10 +3,10 @@
     import Icon from '@iconify/svelte';
     import rightArrow from '@iconify/icons-material-symbols/line-end-arrow';
     import uploadIcon from '@iconify/icons-material-symbols/file-upload';
-    import AnnotatedRecord from '$lib/common/AnnotatedRecord.svelte';
-    import JSONRecord from '$lib/common/JSONRecord.svelte';
+    import AnnotatedRecord from '$lib/component/AnnotatedRecord.svelte';
+    import JSONRecord from '$lib/component/JSONRecord.svelte';
     import contentCopy from '@iconify/icons-material-symbols/content-copy';
-    import CopyButton from '$lib/common/CopyButton.svelte';
+    import CopyButton from '$lib/component/CopyButton.svelte';
     import { ProgressBar } from '@skeletonlabs/skeleton';
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';

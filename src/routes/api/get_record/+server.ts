@@ -1,6 +1,6 @@
-import { DataSource } from "$lib/datatypes.js";
+import type { DataSource } from "$lib/datatypes.js";
 import type { Row } from 'postgres';
-import { rowListToRecordList } from "$lib/db/common";
+import { rowListToNewRecordList, rowListToRecordList } from "$lib/db/common";
 import { getRecordByIDandSource } from "$lib/db/search.js";
 
 export async function GET ({ url }) {
@@ -8,21 +8,13 @@ export async function GET ({ url }) {
     if (id == null) {
         return new Response(JSON.stringify({ error: "Missing id parameter" }), { status: 400 });
     }
-    const source = url.searchParams.get('source');
+    let source = url.searchParams.get('source');
     if (source == null) {
         return new Response(JSON.stringify({ error: "Missing source parameter" }), { status: 400 });
     }
+    const sourceInt : DataSource = parseInt(source);
     let result : Row[] = [];
 
-    switch (source) {
-        case DataSource.HUMAN_ANNOTATED.toString():
-            result = await getRecordByIDandSource(id, DataSource.HUMAN_ANNOTATED);
-            break;
-        case DataSource.MIXTRAL_8X7B_INSTRUCT.toString():
-            result = await getRecordByIDandSource(id, DataSource.MIXTRAL_8X7B_INSTRUCT);
-            break;
-        default:
-            return new Response(JSON.stringify({ error: "Invalid source parameter" }), { status: 400 });
-    }
-    return new Response(JSON.stringify(rowListToRecordList(result)[0]), { status: 200 });   // only one record should be returned
+    result = await getRecordByIDandSource(id, sourceInt);
+    return new Response(JSON.stringify(rowListToNewRecordList(result)[0]), { status: 200 });   // only one record should be returned
 }

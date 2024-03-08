@@ -71,15 +71,78 @@ export async function searchAnnotationWithMatching(key: string, subkey: string, 
 }
 
 export async function getRecordByIDandSource(id : string, source : DataSource){
-    const tableName = source == DataSource.HUMAN_ANNOTATED ? "phee" : "mixtral";
-
     switch (source) {
-        case DataSource.HUMAN_ANNOTATED:
+        case DataSource.PHEE_TRAIN_SET:
             return await sql`SELECT * FROM phee WHERE id = ${id};`;
+        case DataSource.PHEE2_TEST_SET:
+            return await sql`SELECT * FROM phee2test WHERE id = ${id};`;
+        case DataSource.FLANT5:
+            return await sql`SELECT * FROM flant5 WHERE id = ${id};`;
+        case DataSource.UIE:
+            return await sql`SELECT * FROM uie WHERE id = ${id};`;
+        case DataSource.MISTRAL7B:
+            return await sql`SELECT * FROM mistral7b WHERE id = ${id};`;
         case DataSource.MIXTRAL_8X7B_INSTRUCT:
             return await sql`SELECT * FROM mixtral WHERE id = ${id};`;
+        
         default:
             return [];
     }
 
 }
+
+export async function searchFlanT5(key = '', target = '') {
+    if (key === '') {
+        return await sql`
+        SELECT
+            *
+        FROM flant5 
+        WHERE POSITION(LOWER(${target}) IN LOWER(context)) > 0;`
+    }
+    return await sql`
+        SELECT 
+            *
+        FROM search_annotation_flant5(${key}, ${target});`
+}
+
+export async function searchPHEE2Test(key = '', target = '') {
+    if (key === '') {
+        return await sql`
+        SELECT
+            *
+        FROM phee2test 
+        WHERE POSITION(LOWER(${target}) IN LOWER(context)) > 0;`
+    }
+    return await sql`
+        SELECT 
+            *
+        FROM search_annotation_phee2test(${key}, ${target});`
+}
+
+export async function searchUIE(key = '', target = '') {
+    if (key === '') {
+        return await sql`
+        SELECT
+            *
+        FROM uie 
+        WHERE POSITION(LOWER(${target}) IN LOWER(context)) > 0;`
+    }
+    return await sql`
+        SELECT 
+            *
+        FROM search_annotation_uie(${key}, ${target});`
+}
+
+export async function searchMistral7B(key = '', target = '') {
+    if (key === '') {
+        return await sql`
+        SELECT
+            *
+        FROM mistral7b 
+        WHERE POSITION(LOWER(${target}) IN LOWER(context)) > 0;`
+    }
+    return await sql`
+        SELECT 
+            *
+        FROM search_annotation_mistral7b(${key}, ${target});`
+}  

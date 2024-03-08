@@ -1,4 +1,5 @@
 import type { record, event, common, valued_common_str, valued_common_bool, subject, treatment, combination } from '$lib/interfaces';
+import type { newRecord } from '$lib/types/types';
 import type { Row } from 'postgres';
 
 // credit: Typescript documentation, src 
@@ -151,4 +152,21 @@ export function getAnnotationText(record : record, key : string, subkey : string
         }
     }
     return result;
+}
+
+export function rowListToNewRecordList(rows: Row[]): newRecord[] {
+    const result : newRecord[] = [];
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        result.push(rowToNewRecord(row));
+    }
+    return result;
+}
+
+export function rowToNewRecord(row: Row): newRecord {
+    return {
+        id : row.id,
+        context : row.context,
+        events : row.events,
+    };
 }

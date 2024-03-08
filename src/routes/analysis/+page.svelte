@@ -1,16 +1,16 @@
 <script lang="ts">
     import { InputType, DataSource } from '$lib/datatypes';
     import type { record } from '$lib/interfaces';
-    import Record from '$lib/common/Record.svelte';
-    import Query from '$lib/common/Query.svelte';
+    import Record from '$lib/component/Record.svelte';
+    import Query from '$lib/component/Query.svelte';
     import { Paginator, type PaginationSettings, type ModalSettings } from '@skeletonlabs/skeleton';
     import { getModalStore } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
     import plusIcon from '@iconify/icons-material-symbols/add';
     import eyeIcon from '@iconify/icons-material-symbols/visibility';
     import { queries, addQuery } from '$lib/stores/Queries.js';
-	import CompareRecords from '$lib/common/CompareRecords.svelte';
-	import SourceSelector from '$lib/common/SourceSelector.svelte';
+	import CompareRecords from '$lib/component/CompareRecords.svelte';
+	import SourceSelector from '$lib/component/SourceSelector.svelte';
 			
     export let data;
 
@@ -54,8 +54,7 @@
     let results : record[] = [];
     let raw = false;
     let popupToggle = false;
-    let source : DataSource = DataSource.HUMAN_ANNOTATED;
-    let showExampleComparison = false;
+    let source : DataSource = DataSource.PHEE_TRAIN_SET;
 
     let paginationSettings = {
         page: 0,
