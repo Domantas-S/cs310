@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppBar, AppShell, LightSwitch } from '@skeletonlabs/skeleton';
+	import { AppBar, AppShell, LightSwitch, TabGroup, Tab } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
 	import modeNight from '@iconify/icons-material-symbols/mode-night';
 	import { goto } from '$app/navigation';
@@ -18,6 +18,9 @@
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 
+	// Tab functionality
+
+	let activeTab = 'analysis_tab';
 </script>
 
 <Toast />
@@ -28,9 +31,33 @@
 	<svelte:fragment slot="header">
 		<AppBar class="py-2 border-b-2 trail">
 			<svelte:fragment slot="lead">
-				<button type="button" on:click={() => {goto('/')}} class="btn btn-sm variant-filled">
-					Home
+				<button 
+					type="button" 
+					on:click={() => {goto('/')}} 
+					class="btn btn-lg variant-filled px-2 py-1" 
+					style="background-color: #59768a; border-radius: 0.3em;"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 15 15" {...$$props}>
+						<path 
+							fill="currentColor" 
+							fill-rule="evenodd" 
+							d="M10 6.5a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0m-.691 3.516a4.5 4.5 0 1 1 .707-.707l2.838 2.837a.5.5 0 0 1-.708.708z" 
+							clip-rule="evenodd" 
+						/>
+					</svg>
+					DrugWatch
 				</button>
+
+				<div class="px-2"/>
+
+				<TabGroup>
+					<Tab bind:group={activeTab} name="search_link" value="search_tab" on:click={() => {goto(`${window.location.protocol}//${window.location.hostname}:3000/`)}}>
+						Search
+					</Tab>
+					<Tab bind:group={activeTab} name="analysis_link" value="analysis_tab">
+						Analysis
+					</Tab>
+				</TabGroup>
 
 				<div class="px-2"/>
 

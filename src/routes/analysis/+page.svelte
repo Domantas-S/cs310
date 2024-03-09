@@ -117,27 +117,31 @@
 </script>
 
 <div class="container mx-auto">
-    
-    <h1 class="h1">Analysis</h1>   
-    <div class="py-1"></div>
-    <p>Search through database of annotated EHRs.</p>
-    <div class="py-3"></div>
-    
-    <div class="card p-4 items-center text-center mx-auto max-w-fit">
-        <h2>Select input type</h2>
-        <div class="py-3"></div>
-        <span class="px-20 space-x-20">
-            <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Text}}>Text Input</button>
-            <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Parameters}}>Parameters</button>
-        </span>
-        <div class="py-5"></div>
-        <!-- Source selector -->
-        <div class="flex justify-center items-center">
-            <label for="source">Data source:</label>
-            <div class="px-2"></div>
-            <SourceSelector bind:source={source}/>
-        </div>
+  <div class="max-w-fit mx-auto">
+    <div>
+      <h1 class="h1">Analysis</h1>
+      <div class="py-1"></div>
+      <p>Search through database of annotated EHRs.</p>
+      <div class="py-3"></div>
     </div>
+
+    <div class="card p-4 items-center text-center mx-auto">
+      <h2>Select input type</h2>
+      <div class="py-3"></div>
+      <span class="px-20 space-x-20">
+        <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Text}}>Text Input</button>
+        <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Parameters}}>Parameters</button>
+      </span>
+      <div class="py-5"></div>
+
+      <!-- Source selector -->
+      <div class="flex justify-center items-center">
+        <label for="source">Data source:</label>
+        <div class="px-2"></div>
+        <SourceSelector bind:source={source}/>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="p-5"></div>
