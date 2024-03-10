@@ -129,8 +129,8 @@
       <h2>Select input type</h2>
       <div class="py-3"></div>
       <span class="px-20 space-x-20">
-        <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Text}}>Text Input</button>
-        <button class="btn variant-filled rounded px-10" on:click={() => {input = InputType.Parameters}}>Parameters</button>
+        <button class="btn variant-filled rounded px-10 bg-primary-600 text-white" on:click={() => {input = InputType.Text}}>Text Input</button>
+        <button class="btn variant-filled rounded px-10 bg-primary-600 text-white" on:click={() => {input = InputType.Parameters}}>Parameters</button>
       </span>
       <div class="py-5"></div>
 
@@ -154,7 +154,7 @@
                 <div class="py-2"/>
             {/each}
             <div class="flex justify-center py-5">
-                <button class="btn-sm variant-filled rounded flex justify-items-center items-center" on:click={() => addBlankQuery()}>
+                <button class="btn-sm variant-filled rounded flex justify-items-center items-center bg-primary-600 text-white" on:click={() => addBlankQuery()}>
                     <Icon icon={plusIcon}></Icon>
                     <p>Add query</p>
                 </button>

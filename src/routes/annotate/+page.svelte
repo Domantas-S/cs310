@@ -72,27 +72,27 @@
     <div class="py-3" />
     <div class="card grid grid-rows-1 grid-cols-4 divide-x divide-solid gap-x-5 p-3">
         <div class="px-5">
-            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-900">
-                <span class="badge bg-primary-500">1</span>
+            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
+                <span class="badge bg-primary-500 text-white">1</span>
                 <span class="flex-auto">Enter the medical record in the box below</span>
             </div>
         </div>
         <div class="px-5">
-            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-900">
-                <span class="badge bg-primary-500">2</span>
+            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
+                <span class="badge bg-primary-500 text-white">2</span>
                 <span class="flex-auto">Select which model you would like to use</span>
             </div>
         </div>
         <div class="px-5">
-            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-900">
-                <span class="badge bg-primary-500">3</span>
+            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
+                <span class="badge bg-primary-500 text-white">3</span>
                 <span class="flex-auto">Modify the Python schema (if you wish)</span>
             </div>
         </div>
 
         <div class="px-5">
-            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-900">
-                <span class="badge bg-primary-500">4</span>
+            <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
+                <span class="badge bg-primary-500 text-white">4</span>
                 <span class="flex-auto">Click "Annotate" to see the results</span>
             </div>
         </div>
@@ -119,12 +119,12 @@
     
                     <div class="py-2" />
                     <div class="flex justify-center">
-                        <button class="btn btn-sm variant-filled rounded-md" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
+                        <button class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
                     </div>
                     <div class="py-2"/>
 
                     <div class="flex justify-center">
-                        <FileButton name="files" bind:files={files} disabled={waiting} button="btn btn-sm variant-filled rounded-md">
+                        <FileButton name="files" bind:files={files} disabled={waiting} button="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
                             <Icon icon={uploadIcon} />
                             Upload File
                         </FileButton>
@@ -132,7 +132,7 @@
                     <div class="py-2"/>
 
                     <div class="flex justify-center">
-                        <button class="btn variant-filled-primary rounded-md w-full" on:click={annotate} disabled={waiting}>Annotate</button>
+                        <button class="btn variant-filled-primary rounded-md w-full bg-primary-600 text-white" on:click={annotate} disabled={waiting}>Annotate</button>
                     </div>
                 </div> 
     

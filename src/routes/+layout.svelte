@@ -39,13 +39,13 @@
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 15 15" {...$$props}>
 						<path 
-							fill="currentColor" 
+							fill="white" 
 							fill-rule="evenodd" 
 							d="M10 6.5a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0m-.691 3.516a4.5 4.5 0 1 1 .707-.707l2.838 2.837a.5.5 0 0 1-.708.708z" 
 							clip-rule="evenodd" 
 						/>
 					</svg>
-					DrugWatch
+					<span class="text-white">DrugWatch</span>
 				</button>
 
 				<div class="px-2"/>
@@ -61,13 +61,13 @@
 
 				<div class="px-2"/>
 
-				<button type="button" on:click={() => {goto('/analysis')}} class="btn btn-sm variant-filled">
+				<button type="button" on:click={() => {goto('/analysis')}} class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
 					Data Analysis
 				</button>
 				
 				<div class="px-2"/>
 
-				<button type="button" on:click={() => {goto('/annotate')}} class="btn btn-sm variant-filled">
+				<button type="button" on:click={() => {goto('/annotate')}} class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
 					Annotate
 				</button>
 			</svelte:fragment>
