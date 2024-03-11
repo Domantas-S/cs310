@@ -1,12 +1,9 @@
 
 <script lang="ts">
     import Icon from '@iconify/svelte';
-    import rightArrow from '@iconify/icons-material-symbols/line-end-arrow';
     import uploadIcon from '@iconify/icons-material-symbols/file-upload';
-    import AnnotatedRecord from '$lib/component/AnnotatedRecord.svelte';
-    import JSONRecord from '$lib/component/JSONRecord.svelte';
-    import contentCopy from '@iconify/icons-material-symbols/content-copy';
-    import CopyButton from '$lib/component/CopyButton.svelte';
+    import AnnotatedRecord2 from '$lib/component/AnnotatedRecord2.svelte';
+    import type { newRecord } from '$lib/types/types';
     import { ProgressBar } from '@skeletonlabs/skeleton';
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
@@ -21,20 +18,21 @@
     hljs.registerLanguage('json', json);
     storeHighlightJs.set(hljs);
 
-    const exampleOutput = '{ "id": "x", "context": "It has been suggested that PPE (probable phenylotoxicity) caused by cytarabine does not recur with subsequent cytarabine re-challenge.", "is_mult_event": false, "annotations": [ { "events": [ { "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Effect": { "text": ["does not recur"], "start": ["]["], "entity_id": ["T1"]}, "Trigger": { "text": [ "PPE caused by cytarabine" ], "start": [ "PPE caused by cytarabine" ], "entity_id": ["T1"]}, "Negated": { "text": ["is not recur"], "start": [ "does not recur" ], "entity_id": ["T2"], "value": true}, "Speculated": { "text": ["has been suggested"], "start": [ "It has been suggested" ], "entity_id": ["T3"], "value": true}, "Severity": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T4"], "value": "low"}, "Subject": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T5"], "Age": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T6"]}, "Disorder": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T7"]}, "Gender": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T8"]}, "Population": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T9"]},"Race": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T10"]}}, "Treatment": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T11"],"Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Disorder": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T13"]}, "Dosage": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T14"]}, "Duration": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T15"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}, "Route": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T17"]}, "Time_elapsed": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T18"]}, "Freq": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T19"]},"Combination": [{ "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}}, { "event_type": "Adverse_event", "event_id": "E2", "Drug": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T22"]}, "Trigger": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T23"]}}]}}]}]}'
-    const blankRecord : record = {"id": "0", "context": "No record to display", "is_mult_event": false, "annotations": []}
+    // const exampleOutput = '{ "id": "x", "context": "It has been suggested that PPE (probable phenylotoxicity) caused by cytarabine does not recur with subsequent cytarabine re-challenge.", "is_mult_event": false, "annotations": [ { "events": [ { "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Effect": { "text": ["does not recur"], "start": ["]["], "entity_id": ["T1"]}, "Trigger": { "text": [ "PPE caused by cytarabine" ], "start": [ "PPE caused by cytarabine" ], "entity_id": ["T1"]}, "Negated": { "text": ["is not recur"], "start": [ "does not recur" ], "entity_id": ["T2"], "value": true}, "Speculated": { "text": ["has been suggested"], "start": [ "It has been suggested" ], "entity_id": ["T3"], "value": true}, "Severity": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T4"], "value": "low"}, "Subject": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T5"], "Age": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T6"]}, "Disorder": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T7"]}, "Gender": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T8"]}, "Population": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T9"]},"Race": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T10"]}}, "Treatment": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T11"],"Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Disorder": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T13"]}, "Dosage": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T14"]}, "Duration": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T15"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}, "Route": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T17"]}, "Time_elapsed": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T18"]}, "Freq": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T19"]},"Combination": [{ "event_type": "Potential_therapeutic_effect", "event_id": "E1", "Drug": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T12"]}, "Trigger": { "text": ["PPE"], "start": [ "PPE" ], "entity_id": ["T16"]}}, { "event_type": "Adverse_event", "event_id": "E2", "Drug": { "text": ["not specified"], "start": [ "" ], "entity_id": ["T22"]}, "Trigger": { "text": ["cytarabine"], "start": [ "cytarabine" ], "entity_id": ["T23"]}}]}}]}]}'
+    const exampleOutput = {"id":"X1234567_1","context":"A French woman experienced sleep apnea after taking ibuprofen for 2 weeks.", "events":[{   "type":"Adverse_event",   "annotations":[{     "annotation":"Trigger","text":"after taking ibuprofen for 2 weeks"},     {"annotation":"Effect","text":"sleep apnea"},     {"annotation":"Treatment","text":"ibuprofen"},     {"annotation":"Treatment.Drug","text":"ibuprofen"},     {"annotation":"Subject","text":"A French woman"},     {"annotation":"Subject.Gender","text":"woman"}]}]};
+    // const blankRecord : record = {"id": "0", "context": "No record to display", "is_mult_event": false, "annotations": []}
 
     let schema : string = "A python schema will go here...";
     let waiting : boolean = false;
     let model : string = "default";
     let text : string = "";
-    let result : string = exampleOutput;
+    let result : newRecord = exampleOutput;
     let files: FileList;
 			
     const modalStore = getModalStore();
     const modal : ModalSettings = {
         type: 'prompt',
-        title: 'Edit Schema',
+        title: 'Edit Schema - WORK IN PROGRESS',
         body: 'Edit the Python schema here. Once you are done, click "Submit" to save the schema.',
 
         value: schema,
@@ -60,7 +58,7 @@
             body: JSON.stringify({"text" : text}),
         });
 
-        result = await response.text();
+        result = JSON.parse(await response.text());
         waiting = false;
     }
 
@@ -113,7 +111,7 @@
                 <div class="px-5">
                     <p class="text-sm italic">Select model for annotations:</p>
                     <select class="select" id="model" bind:value={model}>
-                        <option value={"default"}>Default</option>
+                        <option value={"default"}>Mistral-7B Instruct-v0.2.Q2_K</option>
                         <option value={null} disabled>More to come...</option>
                     </select>
     
@@ -151,12 +149,10 @@
             
             <div class="py-3" />
             <div>
-                <CodeBlock code={result} text="text-xs" language="json" />
+                <AnnotatedRecord2 data={result}/>
+                <div class="py-3" />
+                <CodeBlock code={JSON.stringify(result)} text="text-xs" language="json" />
             </div>
-            <!-- <div class="flex justify-center flex-grow">
-                <JSONRecord data={JSON.parse(result)}/>
-            </div> -->
-            <!-- ADD AnnotatedRecord here (after either doing some processing on the record or edits to AnnotatedRecord to work with empty start indices) -->
         </div>
     </div>
 </div>
