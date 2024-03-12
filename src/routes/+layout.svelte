@@ -55,20 +55,20 @@
 						Search
 					</Tab>
 					<Tab bind:group={activeTab} name="analysis_link" value="analysis_tab">
-						Analysis
+						Annotate
 					</Tab>
 				</TabGroup>
 
 				<div class="px-2"/>
 
 				<button type="button" on:click={() => {goto('/analysis')}} class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
-					Data Analysis
+					Bulk Annotate
 				</button>
 				
 				<div class="px-2"/>
 
 				<button type="button" on:click={() => {goto('/annotate')}} class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
-					Annotate
+					Live Annotate
 				</button>
 			</svelte:fragment>
 			
