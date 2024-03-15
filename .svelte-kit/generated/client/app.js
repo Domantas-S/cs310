@@ -12,7 +12,7 @@ export const server_loads = [];
 
 export const dictionary = {
 		"/": [2],
-		"/analysis": [~3],
+		"/analysis": [3],
 		"/annotate": [4]
 	};
 

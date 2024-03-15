@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { record } from '$lib/interfaces';
     import Icon from '@iconify/svelte';
     import dataIcon from '@iconify/icons-material-symbols/code';
     import notesIcon from '@iconify/icons-material-symbols/notes';
@@ -8,7 +7,7 @@
     import JsonRecord from './JSONRecord.svelte';
 	import AnnotatedRecord2 from './AnnotatedRecord2.svelte';
 	import CompareRecords from './CompareRecords.svelte';
-	import { DataSource, dataSourceToString } from '$lib/datatypes';
+	import { DataSource, ModelType, dataSourceToString, modelTypeToString } from '$lib/datatypes';
 	import { pheeToNewRecord } from '$lib/data_conversion/phee_to_newrecord';
 	import type { newRecord } from '$lib/types/types';
 
@@ -17,6 +16,7 @@
     export let totalRecords: number;
     export let raw = false;
     export let source: DataSource;
+    export let model: ModelType;
 
     export let popupToggle = false;
     export let compareToggle = false;
@@ -29,6 +29,8 @@
         raw = raw;
         popupToggle = popupToggle;
         compareToggle = compareToggle;
+        source = source;
+        model = model;
     }
 
 </script>
@@ -40,7 +42,7 @@
         <div class="flex justify-end space-x-2">
             {#if !raw}
                 <!-- Compare annotations button with different models -->
-                <button class="btn-icon btn-icon-sm variant-filled" on:click={() => compareToggle = !compareToggle}>
+                <button class="btn-icon btn-icon-sm variant-filled" disabled={source === DataSource.USER_ANNOTATED} on:click={() => compareToggle = !compareToggle}>
                     <Icon icon={compareIcon} />
                 </button>
 
@@ -63,13 +65,13 @@
     {#if !raw && !compareToggle}
         <AnnotatedRecord2 data={info} popupToggle={popupToggle}/>
     {:else if compareToggle}
-        <CompareRecords data={info} originalSource={source} popupToggle={popupToggle}/>
+        <CompareRecords data={info} source={source} originalModel={model} popupToggle={popupToggle}/>
     {:else} 
         <JsonRecord data={info}></JsonRecord>
     {/if}
     <div class="py-2"></div>
     <div class="flex justify-between">
         <p>ID: {info.id}</p>
-        <p>{dataSourceToString(source)}</p>
+        <p>{dataSourceToString(source)} - {modelTypeToString(model)}</p>
     </div>
 </div>

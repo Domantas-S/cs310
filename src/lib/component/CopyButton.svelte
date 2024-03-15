@@ -1,6 +1,5 @@
 <script lang="ts">
     import { clipboard } from '@skeletonlabs/skeleton';
-    import JSONTree from 'svelte-json-tree';
 	import Icon from '@iconify/svelte';
     import contentCopy from '@iconify/icons-material-symbols/content-copy';
 
@@ -9,8 +8,8 @@
 
 
     export let data: any;
-    const defaultButtonColor = 'bg-tertiary-800';
-    const hoverButtonColor = 'bg-tertiary-400';
+    const defaultButtonColor = 'bg-primary-800';
+    const hoverButtonColor = 'bg-primary-400';
     const copiedButtonColor = 'bg-success-500';
 
     let copied = false;

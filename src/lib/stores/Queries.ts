@@ -16,8 +16,6 @@ export function addQuery(query: query) {
 }
 
 export function removeQuery(id: number) {
-    // console.log("remove query " + id);
-    // console.log(`remaining queries: ${queries}`);
     queries.update((queries) => queries.filter((query) => query.id !== id));
 }
 

@@ -8,6 +8,7 @@
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
     import { FileButton } from '@skeletonlabs/skeleton';
+    import { ModelType, modelTypeToString } from '$lib/datatypes';
     
     // Code block and highlighting
     import { CodeBlock } from '@skeletonlabs/skeleton';
@@ -15,6 +16,8 @@
     import 'highlight.js/styles/github-dark.css';
     import json from 'highlight.js/lib/languages/json';
     import { storeHighlightJs } from '@skeletonlabs/skeleton';
+	import { FLANT5ToNewRecord } from '$lib/data_conversion/FLAN-T5_to_newrecord';
+	import { UIEToNewRecord } from '$lib/data_conversion/UIE_to_newrecord';
     hljs.registerLanguage('json', json);
     storeHighlightJs.set(hljs);
 
@@ -24,7 +27,7 @@
 
     let schema : string = "A python schema will go here...";
     let waiting : boolean = false;
-    let model : string = "default";
+    let model : ModelType = ModelType.MISTRAL7B;
     let text : string = "";
     let result : newRecord = exampleOutput;
     let files: FileList;
@@ -34,7 +37,6 @@
         type: 'prompt',
         title: 'Edit Schema - WORK IN PROGRESS',
         body: 'Edit the Python schema here. Once you are done, click "Submit" to save the schema.',
-
         value: schema,
         response: async (r: string) => {
             schema = r;
@@ -50,15 +52,30 @@
     async function annotate() {
         waiting = true;
         
+        let formatted_input = text.trim();
+        // formatted_input = formatted_input.charAt(0).toUpperCase() + formatted_input.slice(1);
+
+
         const response = await fetch("/api/annotate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({"text" : text}),
+            body: JSON.stringify({"text" : [formatted_input], "model" : model}),
         });
+        const data = await response.json();
+        console.log(data);
 
-        result = JSON.parse(await response.text());
+        if (model === ModelType.FLANT5) {
+            result = FLANT5ToNewRecord(data[0]);
+            result.context = formatted_input;
+        } else if (model === ModelType.UIE) {
+            result = UIEToNewRecord(data[0]);
+            result.context = formatted_input;
+        } else {
+            result = JSON.parse(data[0]);
+        }
+
         waiting = false;
     }
 
@@ -68,29 +85,29 @@
 <div class="container mx-auto">
     <h1 class="h1">Live Record Annotations</h1>
     <div class="py-3" />
-    <div class="card grid grid-rows-1 grid-cols-4 divide-x divide-solid gap-x-5 p-3">
+    <div class="card grid grid-rows-1 grid-cols-3 divide-x divide-solid gap-x-5 p-3">
         <div class="px-5">
             <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
                 <span class="badge bg-primary-500 text-white">1</span>
-                <span class="flex-auto">Enter the medical record in the box below</span>
+                <span class="flex-auto">Enter a medical record in the box below</span>
             </div>
         </div>
         <div class="px-5">
             <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
                 <span class="badge bg-primary-500 text-white">2</span>
-                <span class="flex-auto">Select which model you would like to use</span>
+                <span class="flex-auto">Select which model to use for annotations</span>
             </div>
         </div>
-        <div class="px-5">
+        <!-- <div class="px-5">
             <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
                 <span class="badge bg-primary-500 text-white">3</span>
-                <span class="flex-auto">Modify the Python schema (if you wish)</span>
+                <span class="flex-auto">Modify the Python schema</span>
             </div>
-        </div>
+        </div> -->
 
         <div class="px-5">
             <div class="py-1 px-5 text-center rounded-lg hover:bg-surface-500 hover:text-white">
-                <span class="badge bg-primary-500 text-white">4</span>
+                <span class="badge bg-primary-500 text-white">3</span>
                 <span class="flex-auto">Click "Annotate" to see the results</span>
             </div>
         </div>
@@ -111,22 +128,24 @@
                 <div class="px-5">
                     <p class="text-sm italic">Select model for annotations:</p>
                     <select class="select" id="model" bind:value={model}>
-                        <option value={"default"}>Mistral-7B Instruct-v0.2.Q2_K</option>
-                        <option value={null} disabled>More to come...</option>
+                        <option value={ModelType.MISTRAL7B}>Mistral-7B Instruct-v0.2.Q2_K</option>
+                        <option value={ModelType.FLANT5}>{modelTypeToString(ModelType.FLANT5)}</option>
+                        <option value={ModelType.UIE}>{modelTypeToString(ModelType.UIE)}</option>
+                        <!-- <option value={null} disabled>More to come...</option> -->
                     </select>
     
                     <div class="py-2" />
-                    <div class="flex justify-center">
+                    <!-- <div class="flex justify-center">
                         <button class="btn btn-sm variant-filled rounded-md bg-primary-600 text-white" on:click={() => modalStore.trigger(modal)}>Edit Schema</button>
                     </div>
-                    <div class="py-2"/>
+                    <div class="py-2"/> -->
 
-                    <div class="flex justify-center">
+                    <!-- <div class="flex justify-center">
                         <FileButton name="files" bind:files={files} disabled={waiting} button="btn btn-sm variant-filled rounded-md bg-primary-600 text-white">
                             <Icon icon={uploadIcon} />
                             Upload File
                         </FileButton>
-                    </div>
+                    </div> -->
                     <div class="py-2"/>
 
                     <div class="flex justify-center">
@@ -149,9 +168,11 @@
             
             <div class="py-3" />
             <div>
+            {#key result}
                 <AnnotatedRecord2 data={result}/>
                 <div class="py-3" />
                 <CodeBlock code={JSON.stringify(result)} text="text-xs" language="json" />
+            {/key}
             </div>
         </div>
     </div>

@@ -1,11 +1,12 @@
 {
 	"/": [],
-	"/analysis": [
-		"src/routes/analysis/+page.server.ts"
-	],
+	"/analysis": [],
 	"/annotate": [],
 	"/api/annotate": [
 		"src/routes/api/annotate/+server.ts"
+	],
+	"/api/example_records": [
+		"src/routes/api/example_records/+server.ts"
 	],
 	"/api/export": [
 		"src/routes/api/export/+server.ts"

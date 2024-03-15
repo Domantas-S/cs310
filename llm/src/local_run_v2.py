@@ -100,10 +100,6 @@ with open("test.json", "r") as file:
             max_tokens=4096,
             temperature=0.5,
             stop=["</s>"],
-            # response_format={ # Using built-in llama cpp response format is not strict and introduces fields that are not in the schema
-            #     "type": "json_object",
-            #     "schema" : json.dumps(Record.model_json_schema()),
-            # },
             grammar=grammar # Try format outputs with a grammar
         )  
 

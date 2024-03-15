@@ -1,6 +1,19 @@
 // import type { newRecord, event } from "$lib/types/types";
 import fs from "fs";
 
+// function formatAnnotation(ann) {
+//     const subjectSubkeys = ["age", "gender", "population", "race"]
+//     const treatmentSubkeys = ["drug", "route", "dosage", "time elapsed", "duration", "frequency", "combination drug"]
+//     ann = ann.toLowerCase();
+    
+//     if (subjectSubkeys.includes(ann)) {
+//         return `subject.${ann}`;
+//     }
+//     if (treatmentSubkeys.includes(ann)) {
+//         return `treatment.${ann}`;
+//     }
+//     return ann;
+// }
 
 // In addition to the normal fields in test_preds_record.txt, we additionally require the "context" field, which is the entire record text.
 export function FLANT5ToNewRecord(flanT5record) {

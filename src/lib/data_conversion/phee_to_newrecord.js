@@ -37,7 +37,6 @@ export function pheeToNewRecord(pheeRecord) { //: record): newRecord {
                     if (subKey === "Combination"){
                         for (const [subSubKey, subSubValue] of Object.entries(subValue[0])) {
                             if (subSubKey === "text" || subSubKey === "start" || subSubKey === "entity_id" || subSubKey === "event_type" || subSubKey === "event_id") continue
-                            console.log(subSubKey, subSubValue);
                             for (let k = 0; k < subSubValue.text.length; k++) {
                                 let annotation = {
                                     start: subSubValue.start[k][0], // as number,

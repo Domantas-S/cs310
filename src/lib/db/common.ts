@@ -140,13 +140,10 @@ export function getAnnotationText(record : record, key : string, subkey : string
     }
 
     for (e of events) {
-        // console.log(e);
-        // console.log(key, subkey);
         if (e[key as keyof event] != null) {
             if (subkey == '') {
                 result.push(e[key].text);
             } else if (e[key as keyof event][subkey as keyof common] != null) {
-                // console.log('Accessing', key, subkey, JSON.stringify(e));
                 result.push(e[key][subkey].text);
             }
         }

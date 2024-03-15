@@ -22,7 +22,7 @@
     "bg-event_8 rounded border-black border",
     "bg-event_9 rounded border-black border",
   ];
-  $: segmentStyling = event_styles[event_colour];
+  $: segmentStyling = annotationStyle();
 
 
   let textSpliced: string[] = [];
@@ -58,12 +58,64 @@
     return textSpliced;
   }
 
+  function annotationStyle() {
+    const subjectSubkeys = ['age', 'gender', 'population', 'race']; // with flant5 and uie, they don't include the word subject or treatment before the subkeys
+    const treatmenSubkeys = ['drug', 'route', 'dosage', 'time elapsed', 'duration', 'frequency', 'combination.drug'];
+    let style = '';
+  
+    if (isAnnotation){  // handle subkeys that do not have the word subject or treatment before them (when realistically they should)
+      let search = annotation.toLowerCase().split(',')[0];
+      if (subjectSubkeys.includes(search)){
+        return "bg-red-300 rounded border-black border";
+      }
+      if (treatmenSubkeys.includes(search)){
+        return "bg-yellow-300 rounded border-black border";
+      }
+    }
+
+    if (isAnnotation) {
+      let formattedAnn = annotation.toLowerCase().replace(' ', '.').trim().split(',')[0].split('.');
+
+      switch (formattedAnn[0]) {
+        case "subject":
+          style = "bg-red-600";
+          if (formattedAnn[1]) style = "bg-red-300"; // if it's a sub-argument, colour lighter
+          break;
+        case "effect":
+          style = "bg-purple-400";
+          // if (formattedAnn[1]) style = "bg-purple-300"; // if it's a sub-argument, colour lighter
+          break;
+        case "treatment":
+          style = "bg-yellow-600";
+          if (formattedAnn[1]) style = "bg-yellow-300"; // if it's a sub-argument, colour lighter
+          break;
+        case "trigger":
+          style = "bg-cyan-400";
+          break;
+        case "speculated":
+          style = "bg-orange-300";
+          break;
+        case "negated":
+          style = "bg-indigo-300";
+          break;
+        case "severity":
+          style = "bg-green-400";
+          break;
+        
+        default:
+          style = "bg-gray-300";
+      }
+      style += " rounded border-black border";
+    }
+    return style;
+  }
+
 </script>
 
 <svelte:options accessors={true}/>
 
 <div class="group relative flex flex-row align-middle">
-  <span class="px-2 py-1 {isAnnotation ? segmentStyling: ''}" role="presentation">
+  <span class="px-2 py-1 {segmentStyling}" role="presentation">
     <span class="flex items-center">
       {#each textSpliced as part, i}
         {part}
