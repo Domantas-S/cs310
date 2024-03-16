@@ -252,7 +252,7 @@
                             <Record 
                                 info={row}
                                 currentRecord={(paginationSettings.page * paginationSettings.limit) + index + 1} 
-                                totalRecords={results.length} 
+                                totalRecords={paginationSettings.size} 
                                 raw={raw}
                                 popupToggle={popupToggle}
                                 source={source}
@@ -273,7 +273,7 @@
                             <Record 
                                 info={row}
                                 currentRecord={(paginationSettingsCustom.page * paginationSettingsCustom.limit) + index + 1} 
-                                totalRecords={customResults.length} 
+                                totalRecords={paginationSettingsCustom.size} 
                                 raw={raw}
                                 popupToggle={popupToggle}
                                 source={source}
