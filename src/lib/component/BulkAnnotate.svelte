@@ -4,13 +4,24 @@
     import { FileButton, ProgressBar } from '@skeletonlabs/skeleton';
     import Icon from '@iconify/svelte';
     import uploadIcon from '@iconify/icons-material-symbols/file-upload';
+    import infoIcon from '@iconify/icons-material-symbols/info';
     import ModelSelector from './ModelSelector.svelte';
     import { FLANT5ToNewRecord } from '$lib/data_conversion/FLAN-T5_to_newrecord';
     import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
+    import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+			
     export let results : newRecord[] = [];
 
     const toastStore = getToastStore();
+
+
+    const popupHover: PopupSettings = {
+        event: 'hover',
+        target: 'popupHover',
+        placement: 'bottom'
+    };
+					
     // export let validData = false;
     let customData : string;
     let userData : FileList;
@@ -133,14 +144,27 @@
 </script>
 
 
+<div class="card p-2 text-sm variant-filled-secondary" data-popup="popupHover">
+	<p>Upload a text file with each<br>record delimited by a new line.</p>
+	<div class="arrow variant-filled-secondary" />
+</div>
+
+
 <div class="card justify-center p-3">
     <!-- <h3 class="h3">Bulk Annotate</h3> -->
     <div class="">
-        <div class="flex space-x-20 justify-center">
+        <div class="flex justify-center">
             <div>
                 <p class="italic">Upload</p>
                 <input class="input" type="file" disabled={exampleFileName !== ""} bind:files={userData}/>
             </div>
+            <div class="px-1"/>
+            <div class="flex items-center justify-end self-end py-1">
+                <button class="btn-icon btn-icon-sm variant-filled [&>*]:pointer-events-none" use:popup={popupHover}>
+                    <Icon icon={infoIcon}/>
+                </button>
+            </div>
+            <div class="px-10"/>
             
             <div>
                 <label for="inputFile" class="italic">Or select an example file</label>
