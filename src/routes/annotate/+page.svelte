@@ -27,7 +27,7 @@
 
     let schema : string = "A python schema will go here...";
     let waiting : boolean = false;
-    let model : ModelType = ModelType.MISTRAL7B;
+    let model : ModelType = ModelType.FLANT5;
     let text : string = "";
     let result : newRecord = exampleOutput;
     let files: FileList;
@@ -128,7 +128,7 @@
                 <div class="px-5">
                     <p class="text-sm italic">Select model for annotations:</p>
                     <select class="select" id="model" bind:value={model}>
-                        <option value={ModelType.MISTRAL7B}>Mistral-7B Instruct-v0.2.Q2_K</option>
+                        <!-- <option value={ModelType.MISTRAL7B}>Mistral-7B Instruct-v0.2.Q2_K</option> -->
                         <option value={ModelType.FLANT5}>{modelTypeToString(ModelType.FLANT5)}</option>
                         <option value={ModelType.UIE}>{modelTypeToString(ModelType.UIE)}</option>
                         <!-- <option value={null} disabled>More to come...</option> -->
