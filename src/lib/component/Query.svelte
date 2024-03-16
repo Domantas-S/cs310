@@ -41,7 +41,7 @@
         <label class="label"for="Key">Key</label>
         <select class="select" bind:value={query.key}>
             <option value="" disabled selected>Select Key</option> 
-            {#each ['Effect', 'Negated', 'Severity', 'Speculated', 'Subject', 'Treatment', 'Trigger', 'Any'] as key}
+            {#each ['Subject', 'Treatment', 'Effect', 'Negated', 'Severity', 'Speculated', 'Trigger', 'Any'] as key}
                 <option value={key}>{key}</option>
             {/each}
         </select>
