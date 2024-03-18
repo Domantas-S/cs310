@@ -1,0 +1,34 @@
+# Build stage
+FROM node:18-alpine as build
+
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy project files and folders to the current working directory
+COPY . .
+
+# Build the SvelteKit app
+RUN npm run build
+
+# Runtime stage
+FROM node:18-alpine as runtime
+
+# Set working directory to nginx asset directory
+WORKDIR /app
+
+COPY --from=build /app/package.json /app/package-lock.json ./
+COPY --from=build /app/.svelte-kit ./.svelte-kit
+COPY --from=build /app/static ./static
+
+# Install production dependencies
+RUN npm ci --production
+
+EXPOSE 3001
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["tail", "-f", "/dev/null"]
