@@ -8,7 +8,7 @@ export async function POST(event) {
     
     switch (parseInt(request.model)) {
         case ModelType.MISTRAL7B:
-            response = await fetch("http://hoste.docker.internal:5000/mistral7b", {
+            response = await fetch("http://host.docker.internal:5000/mistral7b", {
                 method: "POST",
                 mode: "cors",
                 headers: {
