@@ -19,8 +19,8 @@
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 
 	// Tab functionality
-
 	let activeTab = 'analysis_tab';
+	const annotateFrontendUrl = import.meta.env.DEV ? `${window.location.protocol}//${window.location.hostname}:3000/` : 'https://drugwatch.net/';
 </script>
 
 <Toast />
@@ -51,7 +51,7 @@
 				<div class="px-2"/>
 
 				<TabGroup>
-					<Tab bind:group={activeTab} name="search_link" value="search_tab" on:click={() => {goto(`${window.location.protocol}//${window.location.hostname}:3000/`)}}>
+					<Tab bind:group={activeTab} name="search_link" value="search_tab" on:click={() => {goto(annotateFrontendUrl)}}>
 						Search
 					</Tab>
 					<Tab bind:group={activeTab} name="analysis_link" value="analysis_tab">
