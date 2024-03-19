@@ -1,5 +1,5 @@
 
-const prodBackendURL = "https://annotate.api.drugwatch.net"; 
+const prodBackendURL = "https://annotate.db.drugwatch.net"; 
 const URL = import.meta.env.DEV ? "localhost" : prodBackendURL;
 
 export const config = {
