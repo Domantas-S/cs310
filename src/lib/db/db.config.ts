@@ -1,5 +1,5 @@
 
-const prodBackendURL = "149.86.0.97"; 
+const prodBackendURL = "drugwatch.net";
 
 export const config = import.meta.env.DEV ? {
     host: "localhost",
