@@ -4,6 +4,8 @@
 	import Icon from '@iconify/svelte';
 	import modeNight from '@iconify/icons-material-symbols/mode-night';
 	import { goto } from '$app/navigation';
+	import KCLlogo from '$lib/images/KCLNLP.png';
+	import Warwicklogo from '$lib/images/warwicknlplogo.png';
 	// import '../global.css';
 
 	// Floating UI for Popups
@@ -20,7 +22,7 @@
 
 	// Tab functionality
 	let activeTab = 'analysis_tab';
-	const searchFrontendUrl = import.meta.env.DEV ? `${window.location.protocol}//${window.location.hostname}:3000/` : 'https://drugwatch.net/';
+	const searchFrontendUrl = import.meta.env.DEV ? `localhost:3000/` : 'https://drugwatch.net/';
 </script>
 
 <Toast />
@@ -78,8 +80,28 @@
 		</AppBar>
 	</svelte:fragment>
 
-	<div class="py-6"/>
+	<div class="py-6"/>	
 
+	<div class="relative min-h-screen">
+		<slot />
+
+		<div class="py-20"/>
+		
+		<div class="absolute inset-x-0 bottom-0">
+			<hr class="w-full border-gray-300"/>
+			<div class="flex justify-between items-center px-8">
+				<div class="grid">		
+					<p class="text-sm">Mistral-7B model is not available for annotations at this current time due to limited hardware resources.</p>
+					<p class="text-sm">© 2024 King's College London and University of Warwick</p>
+				</div>
+				<div class="flex">
+					<img src={KCLlogo} alt="KCL NLP Logo" class="h-16 w-16"/>
+					<div class="px-2"/>
+					<img src={Warwicklogo} alt="Warwick NLP Logo" class="h-20 w-20"/>
+				</div>
+			</div>		
+		</div>
+	</div>
 </AppShell>
 
-<slot />
+
