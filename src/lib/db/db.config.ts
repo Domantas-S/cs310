@@ -1,5 +1,5 @@
 
-const prodBackendURL = "https://annotate.db.drugwatch.net"; 
+const prodBackendURL = "drug_watch_annotate_db"; 
 
 export const config = import.meta.env.DEV ? {
     host: "localhost",
@@ -9,7 +9,7 @@ export const config = import.meta.env.DEV ? {
     password: 'postgres'
   } : {
     host: prodBackendURL,
-    port: 80,
+    port: 5444,
     database: 'phee',
     user: 'postgres',
     password: 'postgres'
