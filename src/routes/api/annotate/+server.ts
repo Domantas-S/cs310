@@ -1,14 +1,16 @@
 import { ModelType } from '$lib/datatypes.js';
 
+const prodBackendURL = "https://annotate.api.drugwatch.net";
 
 // Takes a POST request with a JSON body containing the text to be annotated. This is sent to host.docker.internal:5000/annotate.
 export async function POST(event) {
     const request = await event.request.json();
     let response;
+    const URL = import.meta.env.DEV ? "http://localhost:5000" : prodBackendURL;
     
     switch (parseInt(request.model)) {
         case ModelType.MISTRAL7B:
-            response = await fetch("http://localhost:5000/mistral7b", {
+            response = await fetch(URL + "/mistral7b", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -20,7 +22,7 @@ export async function POST(event) {
             return response;
         
         case ModelType.FLANT5:
-            response = await fetch("http://localhost:5000/flant5", {
+            response = await fetch(URL + "/flant5", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -32,7 +34,7 @@ export async function POST(event) {
             return response;
         
         case ModelType.UIE:
-            response = await fetch("http://localhost:5000/uie", {
+            response = await fetch(URL + "/uie", {
                 method: "POST",
                 mode: "cors",
                 headers: {
