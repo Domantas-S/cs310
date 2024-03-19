@@ -8,7 +8,7 @@ export async function POST(event) {
     
     switch (parseInt(request.model)) {
         case ModelType.MISTRAL7B:
-            response = await fetch("http://host.docker.internal:5000/mistral7b", {
+            response = await fetch("http://localhost:5000/mistral7b", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -20,7 +20,7 @@ export async function POST(event) {
             return response;
         
         case ModelType.FLANT5:
-            response = await fetch("http://host.docker.internal:5000/flant5", {
+            response = await fetch("http://localhost:5000/flant5", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -32,7 +32,7 @@ export async function POST(event) {
             return response;
         
         case ModelType.UIE:
-            response = await fetch("http://host.docker.internal:5000/uie", {
+            response = await fetch("http://localhost:5000/uie", {
                 method: "POST",
                 mode: "cors",
                 headers: {
