@@ -24,6 +24,7 @@ COPY --from=build /app/build ./build
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/package-lock.json ./package-lock.json
 COPY --from=build /app/node_modules ./node_modules
+COPY src/lib/data/example_records ./src/lib/data/example_records
 COPY svelte.config.js ./
 COPY tailwind.config.ts ./
 COPY tsconfig.json ./
